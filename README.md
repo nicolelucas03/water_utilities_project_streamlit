@@ -1,4 +1,18 @@
-# Streamlit Skeleton
-A fully-designed skeleton as a base for Streamlit dashboards and apps.
+## Streamlit UI Skeleton
 
-## Tech Stack 
+**Author**: Nicole Lucas 
+
+**Email**: nicoleclucas003@gmail.com
+
+### Overview
+This is a UI skeleton for a Streamlit dashboard for future projects. 
+
+### Tech Stack :desktop_computer:
+- **Python**- as main programming language
+- **Streamlit**- Python framework
+
+### Features :pushpin:
+- **Homepage** with tabs
+
+### Screenshots :camera:
+
