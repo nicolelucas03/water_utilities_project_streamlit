@@ -1,4 +1,4 @@
-## Streamlit UI Skeleton
+## African Utilities Project
 
 **Author**: Nicole Lucas 
 
