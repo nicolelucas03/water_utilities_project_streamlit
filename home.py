@@ -2,9 +2,10 @@ import streamlit as st
 st.title("Streamlit App")
 st.write("Hello, world!")
 
+# Sidebar selections
 add_selectbox = st.sidebar.selectbox(
     "Select Country", 
-    ("CountryA", "CountryB", "CountryC")
+    ("Cameroon", "Lesotho", "Malawi", "Uganda")
 )
 
 with st.sidebar: 
