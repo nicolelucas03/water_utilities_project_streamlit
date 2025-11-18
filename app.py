@@ -4,6 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go 
 from plotly.subplots import make_subplots 
 import numpy as np
+from modules import financial_performance
 
 st.set_page_config(
     page_title = "Water Utilities Dashboard",
@@ -46,7 +47,7 @@ def load_data():
     w_access = pd.read_csv('data/water_access.csv')
     w_service = pd.read_csv('data/water_service.csv')
 
- # Parse dates
+ # Parsing all dates
     all_fin_service['date_MMYY'] = pd.to_datetime(all_fin_service['date_MMYY'], format='%b/%y')
     all_national['date_YY'] = pd.to_datetime(all_national['date_YY'], format='%Y')
     billing['date_MMYY'] = pd.to_datetime(billing['date_MMYY'], format='%b/%y')
@@ -55,6 +56,12 @@ def load_data():
     s_service['date_MMYY'] = pd.to_datetime(s_service['date_MMYY'], format='%b/%y')
     w_access['date_YY'] = pd.to_datetime(w_access['date_YY'], format='%Y')
     w_service['date_MMYY'] = pd.to_datetime(w_service['date_MMYY'], format='%b/%y')
+
+# Fixing the uppercase/lowercase country names
+    dfs_to_normalize = [all_fin_service, all_national, billing, production, s_access, s_service, w_access, w_service]
+    for df in dfs_to_normalize:
+        if 'country' in df.columns:
+            df['country'] = df['country'].str.title()
 
     return {
         'data/all_fin_service': all_fin_service,
@@ -87,6 +94,7 @@ with st.sidebar:
     st.markdown("---")
     st.subheader("Global Filters")
 
+
 #Filtering for countries
     all_countries = set() 
     for df in data.values(): 
@@ -96,7 +104,7 @@ with st.sidebar:
     selected_countries = st.multiselect( 
         "Select Countries", 
         options=sorted(all_countries),
-        default=sorted(all_countries)
+        default=None,
     )
 
     all_years = []
@@ -104,7 +112,6 @@ with st.sidebar:
         if "date_YY" in df.columns: 
             all_years.extend(df["date_YY"].dt.year.unique())
         elif "date_MMYY" in df.columns: 
-            # FIXED TYPOS
             all_years.extend(df["date_MMYY"].dt.year.unique())
         elif "date_YYMMDD" in df.columns: 
             all_years.extend(df["date_YYMMDD"].dt.year.unique())
@@ -117,6 +124,24 @@ with st.sidebar:
             value=(int(min(all_years)), int(max(all_years)))
         )
 
+#This is for keeping the pages as radio buttons. Might change to pages?? 
+if page == "Executive Overview":
+    st.write("KPIs will go here...")
+
+elif page == "Financial Performance":
+    financial_performance.show()
+
+elif page == "Service Delivery":
+    st.write("Service data goes here...")
+
+elif page == "Operations & Production":
+    st.write("Production goes here...")
+
+elif page == "Access":
+    st.write("Access data goes here...")
+
+    
+
 #For a report: 
 with st.sidebar:
     st.download_button(
@@ -125,3 +150,14 @@ with st.sidebar:
         file_name="Water_Utility_Report.pdf",
         mime="application/pdf"
     )
+
+#For an AI chatbot
+def dummy_function():
+    st.write("Testing just for now")
+
+with st.sidebar:
+    st.button(
+        label="🤖 Chat with an AI Bot",
+        on_click=dummy_function 
+    )
+
