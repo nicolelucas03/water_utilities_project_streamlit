@@ -129,7 +129,7 @@ if page == "Executive Overview":
     st.write("KPIs will go here...")
 
 elif page == "Financial Performance":
-    financial_performance.show()
+    financial_performance.show(selected_countries)
 
 elif page == "Service Delivery":
     st.write("Service data goes here...")
@@ -146,7 +146,7 @@ elif page == "Access":
 with st.sidebar:
     st.download_button(
         label="📄 Download Report PDF",
-        data=open("report.pdf", "rb").read(),
+        data=open("assets/report.pdf", "rb").read(),
         file_name="Water_Utility_Report.pdf",
         mime="application/pdf"
     )

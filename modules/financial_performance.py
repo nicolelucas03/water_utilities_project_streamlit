@@ -8,20 +8,15 @@ def load_data():
     df['date_MMYY'] = pd.to_datetime(df['date_MMYY'], format='%b/%y')
     return df
 
-def show():
+def show(selected_countries):
     st.title("Financial Performance")
     
     df = load_data()
 
-    st.sidebar.header("Filters")
-
-    if 'country' in df.columns:
-        selected_country = st.sidebar.multiselect(
-            "Select Country",
-            options=df['country'].unique(),
-            default=df['country'].unique()
-        )
-        filtered_df = df[df['country'].isin(selected_country)]
+    # Filter by selected countries from global filter
+    #TO DO: figure out what the default will be (either None or All countries)
+    if selected_countries:
+        filtered_df = df[df['country'].isin(selected_countries)]
     else:
         filtered_df = df
 
