@@ -140,9 +140,7 @@ elif page == "Operations & Production":
 elif page == "Access":
     st.write("Access data goes here...")
 
-    
-
-#For a report: 
+#For a report (just a test right now): 
 with st.sidebar:
     st.download_button(
         label="📄 Download Report PDF",
