@@ -6,15 +6,34 @@ from plotly.subplots import make_subplots
 import numpy as np
 from modules import financial_performance
 
+
 st.set_page_config(
     page_title = "Water Utilities Dashboard",
     layout = "wide",
     initial_sidebar_state = "expanded"
 )
 
-#CSS will go here 
+# Loading Poppins font from Google Fonts and applyng globally. Folder didn't work for me.
+st.markdown(
+    """
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --app-font: 'Poppins', sans-serif; }
+        html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stToolbar"], .stApp, .block-container {
+            font-family: var(--app-font) !important;
+        }
+        /* Ensure common text elements use Poppins */
+        h1, h2, h3, h4, h5, h6, p, span, label, button, input {
+            font-family: var(--app-font) !important;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+#CSS will go here - for future use
 st.markdown("""
-<style>
+<style>       
     .main-header {
         font-size: 42px;
         font-weight: bold;
@@ -34,6 +53,7 @@ st.markdown("""
         border-left: 5px solid #1f77b4;
     }
 </style>
+            
 """, unsafe_allow_html=True)
 
 @st.cache_data
@@ -46,11 +66,14 @@ def load_data():
     s_service = pd.read_csv('data/s_service.csv')
     w_access = pd.read_csv('data/water_access.csv')
     w_service = pd.read_csv('data/water_service.csv')
+    
+    # Removing duplicate header rows that may exist in the data
+    billing = billing[billing['date'] != 'date'].reset_index(drop=True)
 
- # Parsing all dates
+    # Parsing all dates
     all_fin_service['date_MMYY'] = pd.to_datetime(all_fin_service['date_MMYY'], format='%b/%y')
     all_national['date_YY'] = pd.to_datetime(all_national['date_YY'], format='%Y')
-    billing['date_MMYY'] = pd.to_datetime(billing['date_MMYY'], format='%b/%y')
+    billing['date'] = pd.to_datetime(billing['date'], format='%Y-%m-%d')
     production['date_YYMMDD'] = pd.to_datetime(production['date_YYMMDD'], format='%Y/%m/%d')
     s_access['date_YY'] = pd.to_datetime(s_access['date_YY'], format='%Y')
     s_service['date_MMYY'] = pd.to_datetime(s_service['date_MMYY'], format='%b/%y')
@@ -78,7 +101,12 @@ data = load_data()
 
 # Sidebar 
 with st.sidebar:
+    #TO DO: Troubleshoot with st.logo again!!
+    #logo in sidebar with css because st.logo does not work for me
+    #TO DO: Link site to logo maybe?
+    st.image("assets/wasreb_logo_dashboard.jpg", width=60)
     st.title("Navigation")
+    
 
     page = st.radio(
         "Select a Page", 
@@ -129,7 +157,7 @@ if page == "Executive Overview":
     st.write("KPIs will go here...")
 
 elif page == "Financial Performance":
-    financial_performance.show(selected_countries)
+    financial_performance.show(selected_countries, year_range)
 
 elif page == "Service Delivery":
     st.write("Service data goes here...")
@@ -143,10 +171,11 @@ elif page == "Access":
 #For a report (just a test right now): 
 with st.sidebar:
     st.download_button(
-        label="📄 Download Report PDF",
+        label= "📄 Download Report PDF",
         data=open("assets/report.pdf", "rb").read(),
         file_name="Water_Utility_Report.pdf",
-        mime="application/pdf"
+        mime="application/pdf",
+
     )
 
 #For an AI chatbot
