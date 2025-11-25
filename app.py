@@ -31,31 +31,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-#CSS will go here - for future use
-st.markdown("""
-<style>       
-    .main-header {
-        font-size: 42px;
-        font-weight: bold;
-        color: #1f77b4;
-        text-align: center;
-        padding: 20px;
-    }
-    .sub-header {
-        font-size: 24px;
-        color: #2c3e50;
-        padding: 10px 0;
-    }
-    .metric-card {
-        background-color: #f8f9fa;
-        padding: 15px;
-        border-radius: 10px;
-        border-left: 5px solid #1f77b4;
-    }
-</style>
-            
-""", unsafe_allow_html=True)
-
 @st.cache_data
 def load_data(): 
     all_fin_service = pd.read_csv('data/all_fin_service.csv')
@@ -100,10 +75,9 @@ def load_data():
 data = load_data()
 
 # Sidebar 
+#logo in sidebar with css because st.logo does not work for me
+#TO DO: Link site to logo maybe?
 with st.sidebar:
-    #TO DO: Troubleshoot with st.logo again!!
-    #logo in sidebar with css because st.logo does not work for me
-    #TO DO: Link site to logo maybe?
     st.image("assets/wasreb_logo_dashboard.jpg", width=60)
     st.title("Navigation")
     

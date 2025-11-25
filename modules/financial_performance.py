@@ -2,32 +2,35 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from components.container import card_container
+import plotly.graph_objects as go
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv('data/billing.csv', low_memory=False)
-    df = df[df['date'] != 'date'].reset_index(drop=True)
-    df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
+    df_billing = pd.read_csv('data/billing.csv', low_memory=False)
+    df_billing = df_billing[df_billing['date'] != 'date'].reset_index(drop=True)
+    df_billing['date'] = pd.to_datetime(df_billing['date'], format='%Y-%m-%d')
     
     # Convert numeric columns from strings to numbers
-    df['consumption_m3'] = pd.to_numeric(df['consumption_m3'], errors='coerce')
-    df['billed'] = pd.to_numeric(df['billed'], errors='coerce')
-    df['paid'] = pd.to_numeric(df['paid'], errors='coerce')
+    df_billing['consumption_m3'] = pd.to_numeric(df_billing['consumption_m3'], errors='coerce')
+    df_billing['billed'] = pd.to_numeric(df_billing['billed'], errors='coerce')
+    df_billing['paid'] = pd.to_numeric(df_billing['paid'], errors='coerce')
     
     # Normalize country names to title case
-    if 'country' in df.columns:
-        df['country'] = df['country'].str.title()
+    if 'country' in df_billing.columns:
+        df_billing['country'] = df_billing['country'].str.title()
     
-    return df
+    df_financial = pd.read_csv('data/all_fin_service.csv')
+    df_financial['date_MMYY'] = pd.to_datetime(df_financial['date_MMYY'], format='%b/%y')
+    
+    return df_billing, df_financial
+
 
 
 def show(selected_countries, year_range=None):
     st.title("Financial Performance")
     
-    df = load_data()
-
-    # Apply global filters from app.py
-    filtered_df = df.copy()
+    df_billing, df_financial = load_data()
+    filtered_df = df_billing.copy()
     
     # Filter by selected countries from global filter
     if selected_countries:
@@ -41,18 +44,24 @@ def show(selected_countries, year_range=None):
             (filtered_df['date'].dt.year <= end_year)
         ]
 
-    # Calculating some KPIs
+    # Calculating some KPIs - some used, some not
     total_revenue = filtered_df['paid'].sum()
     total_billed = filtered_df['billed'].sum()
     collection_rate = (total_revenue / total_billed * 100) if total_billed > 0 else 0
-    avg_consumption = filtered_df['consumption_m3'].mean()
-    total_customers = filtered_df['customer_id'].nunique()
+    total_opex = df_financial['opex'].sum()
+    cost_recovery_rate = (df_financial['sewer_revenue'].sum() / total_opex * 100) if total_opex > 0 else 0
     outstanding = total_billed - total_revenue
+    total_customers = filtered_df['customer_id'].nunique()
+    avg_revenue_per_customer = df_billing['paid'].sum() / df_billing['customer_id'].nunique()
 
-    # Placing the KPIs on dashboard
-    st.markdown("### Key Performance Indicators")
+
+    avg_consumption = filtered_df['consumption_m3'].mean()
     
-    col1, col2, col3, col4 = st.columns(4)
+
+    #KPIs to display: Total Revenue, Collection rate, Cost recovery rate
+    #st.markdown("### Key Performance Indicators")
+    
+    col1, col2, col3 = st.columns(3)
     
     with col1:
         with card_container(key="kpi_metric1"):
@@ -60,15 +69,26 @@ def show(selected_countries, year_range=None):
     
     with col2:
         with card_container(key="kpi_metric2"):
-            st.metric("Total Billed", f"${total_billed:,.0f}")
-    
+            st.metric("Collection Rate", f"{collection_rate:.2f}%")
+
     with col3:
         with card_container(key="kpi_metric3"):
-            st.metric("Collection Rate", f"{collection_rate:.1f}%")
+            st.metric("Cost Recovery Rate", f"{cost_recovery_rate:.2f}%")
     
-    with col4:
+    #KPIS: outstanding, active customers, avg revenue/customer
+    col1, col2, col3 = st.columns(3)
+
+    with col1: 
         with card_container(key="kpi_metric4"): 
-            st.metric("Outstanding Amount", f"${outstanding:,.0f}")
+            st.metric("Outstanding", f"${outstanding:,.0f}")
+
+    with col2: 
+        with card_container(key="kpi_metric5"): 
+            st.metric("Active Customers", f"{total_customers}")
+
+    with col3: 
+        with card_container(key="kpi_metric6"): 
+            st.metric("Avg Revenue / Customer", f"${avg_revenue_per_customer:.2f}")
 
     st.markdown("---")
 
@@ -78,6 +98,7 @@ def show(selected_countries, year_range=None):
     # Remove any rows where country is NaN
     monthly_by_country = monthly_by_country.dropna(subset=['country'])
 
+    st.markdown("### Revenue Breakdown & Trends")
 
     tab1, tab2 = st.tabs(["Revenue Trend", "Tab2"])
         # Create line chart with plotly express
@@ -103,4 +124,63 @@ def show(selected_countries, year_range=None):
         fig_revenue.update_traces(line=dict(width=3), marker=dict(size=8))
         
         st.plotly_chart(fig_revenue, use_container_width=True)
+
+    def calculate_kpis_by_group(df, group_col):
+        return (
+            df.groupby(group_col)
+            .agg(
+                total_revenue=('paid', 'sum'),   
+                total_billed=('billed', 'sum')  
+            )
+            .reset_index()
+            .sort_values('total_revenue', ascending=False)
+        )
+
+    with tab2: 
+        st.markdown("Hello")
+
+    
+    st.markdown("### Collection Efficiency & Payment Analysis")
+
+    tab1, tab2 = st.tabs(["Tab1", "Tab2"])
+    
+    with tab1: 
+        st.markdown("Hello")
+
+    with tab2: 
+        st.markdown("Hello")
+
+    
+    st.markdown("### Customer Segmentation & Behavior")
+
+    tab1, tab2 = st.tabs(["Tab1", "Tab2"])
+    
+    with tab1: 
+        st.markdown("Hello")
+
+    with tab2: 
+        st.markdown("Hello")
+    
+    
+    st.markdown("### Sewer Service & Financial Performance")
+
+    tab1, tab2 = st.tabs(["Tab1", "Tab2"])
+    
+    with tab1: 
+        st.markdown("Hello")
+
+    with tab2: 
+        st.markdown("Hello")
+
+    
+    st.markdown("### Operational Cost Analysis")
+
+    tab1, tab2 = st.tabs(["Tab1", "Tab2"])
+    
+    with tab1: 
+        st.markdown("Hello")
+
+    with tab2: 
+        st.markdown("Hello")
+    
     
