@@ -1,16 +1,16 @@
 import streamlit as st
+st.set_page_config(
+    page_title = "Water Utilities Dashboard",
+    layout = "wide",
+    initial_sidebar_state = "expanded"
+)
+
 import pandas as pd 
 import plotly.express as px 
 import plotly.graph_objects as go 
 from plotly.subplots import make_subplots 
 import numpy as np
 from modules import financial_performance
-
-st.set_page_config(
-    page_title = "Water Utilities Dashboard",
-    layout = "wide",
-    initial_sidebar_state = "expanded"
-)
 
 #st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
 

@@ -5,6 +5,67 @@ from components.container import card_container
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+
+st.markdown("""
+    <style>
+        /* -----------------------------------
+        Expander container (background + border)
+        ----------------------------------- */
+        div[data-testid="stExpander"] {
+            background-color: #1a1a3d !important;
+            border: 1px solid #5681d0 !important;
+            border-radius: 8px !important;
+            color: white !important; 
+        }
+
+        /* Expander header text */
+        div[data-testid="stExpander"] div[role="button"] {
+            color: white !important; 
+            background-color: #5681d0 !important;  /* Dark blue header */
+            font-weight: 500 !important;
+        }
+
+        /* Expander arrow icon */
+        div[data-testid="stExpander"] svg {
+            color: white !important; 
+        }
+
+        /* Metric container card styling */
+        [data-testid="metric-container"] {
+            background-color: #1a1a3d !important;
+            border-radius: 8px !important;
+            padding: 10px !important;
+            color: white !important;
+        }
+
+        /* Streamlit dataframe container */
+        [data-testid="stDataFrame"] {
+            background-color: #1a1a3d !important;
+            color: white !important;
+        }
+
+        /* Scrollbar styling for dataframes */
+        [data-testid="stDataFrame"]::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        [data-testid="stDataFrame"]::-webkit-scrollbar-thumb {
+            background-color: #5681d0;
+            border-radius: 4px;
+        }
+
+        [data-testid="stDataFrame"]::-webkit-scrollbar-track {
+            background: #1a1a3d;
+        }
+
+        /* General body background */
+        body {
+            background-color: #0f0f2e !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 @st.cache_data
 def load_data():
     df_billing = pd.read_csv('data/billing.csv', low_memory=False)
@@ -717,32 +778,6 @@ def show(selected_countries, year_range=None):
 
 
     st.markdown("### Access Datasets")
-    st.markdown("""
-    <style>
-
-        /* Expander container (background + border) */
-        div[data-testid="stExpander"] {
-            background-color: #1a1a3d !important;
-            border: 1px solid #5681d0 !important;
-            border-radius: 8px !important;
-            color: white !important; 
-        }
-
-        /* Expander header text */
-        div[data-testid="stExpander"] div[role="button"] {
-            color: white !important; 
-            background-color: white !important;
-            font-weight: 500 !important;
-        }
-
-        /* Expander icon (the arrow) */
-        div[data-testid="stExpander"] svg {
-            color: white !important; 
-        }
-
-    </style>
-    """, unsafe_allow_html=True)
-
     with st.expander("Click to view billing.csv"): 
         st.dataframe(df_billing)
     
