@@ -16,6 +16,8 @@ def card_container(key=None):
         box-sizing: border-box;
         overflow: hidden; /* Enable scroll on small screens */
         box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+        background-color: #1a1a3d; 
+        color: white; 
     }
     """,
     """
@@ -23,6 +25,7 @@ def card_container(key=None):
             width: 100%;
             min-width: 1px;
             overflow: hidden;
+            color: #1e3a8a; /* Dark blue text for nested elements */
         }
         """,
         """
@@ -36,8 +39,7 @@ def card_container(key=None):
             width: 100%; /* Adjusting for padding */
             min-width: 1px;
             border: none;
-                        overflow: hidden;
-
+            overflow: hidden;
         }
         """,
         """
@@ -46,8 +48,7 @@ def card_container(key=None):
             width: 100% !important; /* Adjusting for padding */
             min-width: 1px;
             border: none;
-                        overflow: hidden;
-
+            overflow: hidden;
         }
         """
     ])

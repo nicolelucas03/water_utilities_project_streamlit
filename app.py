@@ -6,12 +6,14 @@ from plotly.subplots import make_subplots
 import numpy as np
 from modules import financial_performance
 
-
 st.set_page_config(
     page_title = "Water Utilities Dashboard",
     layout = "wide",
     initial_sidebar_state = "expanded"
 )
+
+#st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
+
 
 # Loading Poppins font from Google Fonts and applyng globally. Folder didn't work for me.
 st.markdown(
@@ -75,8 +77,6 @@ def load_data():
 data = load_data()
 
 # Sidebar 
-#logo in sidebar with css because st.logo does not work for me
-#TO DO: Link site to logo maybe?
 with st.sidebar:
     st.image("assets/wasreb_logo_dashboard.jpg", width=60)
     st.title("Navigation")
