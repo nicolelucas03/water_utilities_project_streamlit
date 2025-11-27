@@ -12,43 +12,42 @@ from plotly.subplots import make_subplots
 import numpy as np
 from modules import financial_performance
 import os
-from components import container
+from components.container import card_container
 
 
 #st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
 
-
-# Loading Poppins font from Google Fonts and applyng globally. Folder didn't work for me.
+# Load Poppins globally and apply dark theme
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
+    /* GLOBAL */
     * {
         font-family: 'Poppins', sans-serif !important;
-    }
-
-    html, body, .stApp, [data-testid="stAppViewContainer"] {
-        font-family: 'Poppins', sans-serif !important;
-        background-color: #212750 !important;
         color: #f8f8f2 !important;
     }
 
-    /* HEADER */
-    [data-testid="stHeader"] {
-        background: transparent !important;
+    /* APP BACKGROUND */
+    html, body, .stApp, [data-testid="stAppViewContainer"] {
+        background-color: #212750 !important;
+        color: #f8f8f2 !important;
     }
 
     /* SIDEBAR */
     [data-testid="stSidebar"] {
         background-color: #1a1a3d !important;
+    }
+
+    [data-testid="stSidebar"] * {
         color: #f8f8f2 !important;
+        font-family: 'Poppins', sans-serif !important;
     }
 
     /* HEADINGS */
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'Poppins', sans-serif !important;
         color: #f8f8f2 !important;
+        font-family: 'Poppins', sans-serif !important;
     }
 
     /* METRICS */
@@ -61,69 +60,19 @@ st.markdown("""
         font-family: 'Poppins', sans-serif !important;
     }
 
-    [data-testid="stMetricLabel"] {
-        color: #cccccc !important;
-    }
-
-    /* TABS */
-    .stTabs [data-baseweb="tab"] {
-        font-family: 'Poppins', sans-serif !important;
-        font-weight: 500 !important;
-        color: #aeb1c3 !important;
-        border-bottom: 2px solid transparent !important;
-    }
-    .stTabs [aria-selected="true"] {
+    /* STYLABLE CONTAINER (card_container) */
+    .stStylableContainer * {
         color: #f8f8f2 !important;
-        border-bottom: 3px solid #5681d0 !important;
-    }
-
-    /* EXPANDERS */
-    div[data-testid="stExpander"] {
-        background-color: #1a1a3d !important;
-        border: 1px solid #36406b !important;
-        border-radius: 10px !important;
         font-family: 'Poppins', sans-serif !important;
     }
 
-    /* SELECTBOXES */
-    .stSelectbox div[data-baseweb="select"],
-    .stMultiSelect div[data-baseweb="select"] {
-        background-color: #1a1a3d !important;
-        border: 1px solid #36406b !important;
-        font-family: 'Poppins', sans-serif !important;
-    }
-
-    /* SLIDER */
-    .stSlider {
-        font-family: 'Poppins', sans-serif !important;
-    }
-
-    /* BUTTONS */
-    .stButton button {
-        background-color: #5681d0 !important;
+    /* Plotly graphs text */
+    [data-testid="stPlotlyChart"] * {
         color: #f8f8f2 !important;
-        border-radius: 8px !important;
-        border: none !important;
-        font-family: 'Poppins', sans-serif !important;
-        font-weight: 600 !important;
-    }
-
-    /* DOWNLOAD BUTTON */
-    .stDownloadButton button {
-        background-color: #1a1a3d !important;
-        border: 1px solid #5681d0 !important;
         font-family: 'Poppins', sans-serif !important;
     }
-
-    /* DATAFRAME */
-    div[data-testid="stDataFrame"] * {
-        font-family: 'Poppins', sans-serif !important;
-        color: #f8f8f2 !important;
-    }
-
 </style>
 """, unsafe_allow_html=True)
-
 
 
 @st.cache_data
