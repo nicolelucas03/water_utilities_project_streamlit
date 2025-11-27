@@ -17,62 +17,113 @@ import os
 
 
 # Loading Poppins font from Google Fonts and applyng globally. Folder didn't work for me.
-st.markdown(
-    """
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --app-font: 'Poppins', sans-serif; }
-        html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stToolbar"], .stApp, .block-container {
-            font-family: var(--app-font) !important;
-        }
-        /* Ensure common text elements use Poppins */
-        h1, h2, h3, h4, h5, h6, p, span, label, button, input {
-            font-family: var(--app-font) !important;
-        }
-        /* EXPANDER */
-        div[data-testid="stExpander"] {
-            background-color: #1a1a3d !important;
-            border: 1px solid #5681d0 !important;
-            border-radius: 8px !important;
-            color: white !important;
-        }
-        div[data-testid="stExpander"] div[role="button"] {
-            color: white !important;
-            background-color: #5681d0 !important;
-            font-weight: 500 !important;
-        }
-        div[data-testid="stExpander"] svg {
-            color: white !important;
-        }
+# Load Poppins font globally
+st.markdown("""
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        /* METRIC CONTAINERS */
-        [data-testid="metric-container"] {
-            background-color: #1a1a3d !important;
-            border-radius: 8px !important;
-            padding: 10px !important;
-            color: white !important;
-        }
+<style>
 
-        /* DATAFRAME SCROLLBARS */
-        [data-testid="stDataFrame"]::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        [data-testid="stDataFrame"]::-webkit-scrollbar-thumb {
-            background-color: #5681d0;
-            border-radius: 4px;
-        }
-        [data-testid="stDataFrame"]::-webkit-scrollbar-track {
-            background: #1a1a3d;
-        }
+    * {
+        font-family: 'Poppins', sans-serif !important;
+    }
 
-        body {
-            background-color: #0f0f2e !important;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+    html, body, .stApp, [data-testid="stAppViewContainer"] {
+        font-family: 'Poppins', sans-serif !important;
+        background-color: #212750 !important;
+        color: #f8f8f2 !important;
+    }
+
+    /* HEADER */
+    [data-testid="stHeader"] {
+        background: transparent !important;
+    }
+
+    /* SIDEBAR */
+    [data-testid="stSidebar"] {
+        background-color: #1a1a3d !important;
+        color: #f8f8f2 !important;
+    }
+
+    /* HEADINGS */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Poppins', sans-serif !important;
+        color: #f8f8f2 !important;
+    }
+
+    /* METRICS */
+    [data-testid="metric-container"] {
+        background-color: #1a1a3d !important;
+        border: 1px solid #5681d0 !important;
+        border-radius: 12px !important;
+        padding: 18px !important;
+        color: #f8f8f2 !important;
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    [data-testid="stMetricLabel"] {
+        color: #cccccc !important;
+    }
+
+    /* TABS */
+    .stTabs [data-baseweb="tab"] {
+        font-family: 'Poppins', sans-serif !important;
+        font-weight: 500 !important;
+        color: #aeb1c3 !important;
+        border-bottom: 2px solid transparent !important;
+    }
+    .stTabs [aria-selected="true"] {
+        color: #f8f8f2 !important;
+        border-bottom: 3px solid #5681d0 !important;
+    }
+
+    /* EXPANDERS */
+    div[data-testid="stExpander"] {
+        background-color: #1a1a3d !important;
+        border: 1px solid #36406b !important;
+        border-radius: 10px !important;
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* SELECTBOXES */
+    .stSelectbox div[data-baseweb="select"],
+    .stMultiSelect div[data-baseweb="select"] {
+        background-color: #1a1a3d !important;
+        border: 1px solid #36406b !important;
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* SLIDER */
+    .stSlider {
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* BUTTONS */
+    .stButton button {
+        background-color: #5681d0 !important;
+        color: #f8f8f2 !important;
+        border-radius: 8px !important;
+        border: none !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-weight: 600 !important;
+    }
+
+    /* DOWNLOAD BUTTON */
+    .stDownloadButton button {
+        background-color: #1a1a3d !important;
+        border: 1px solid #5681d0 !important;
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* DATAFRAME */
+    div[data-testid="stDataFrame"] * {
+        font-family: 'Poppins', sans-serif !important;
+        color: #f8f8f2 !important;
+    }
+
+</style>
+""", unsafe_allow_html=True)
+
+
 
 @st.cache_data
 def load_data(): 
