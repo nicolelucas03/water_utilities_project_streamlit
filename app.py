@@ -11,6 +11,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots 
 import numpy as np
 from modules import financial_performance
+import os
 
 #st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
 
@@ -143,14 +144,18 @@ elif page == "Access":
     st.write("Access data goes here...")
 
 #For a report (just a test right now): 
-with st.sidebar:
-    st.download_button(
-        label= "📄 Download Report PDF",
-        data=open("assets/report.pdf", "rb").read(),
-        file_name="Water_Utility_Report.pdf",
-        mime="application/pdf",
+PDF_PATH = os.path.join(os.path.dirname(__file__), "assets", "report.pdf")
 
-    )
+with st.sidebar:
+    if os.path.exists(PDF_PATH):
+        st.download_button(
+            label="📄 Download Report PDF",
+            data=open(PDF_PATH, "rb").read(),
+            file_name="Water_Utility_Report.pdf",
+            mime="application/pdf",
+        )
+    else:
+        st.error(f"Report not found at: {PDF_PATH}")
 
 #For an AI chatbot
 def dummy_function():
