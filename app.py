@@ -12,12 +12,13 @@ from plotly.subplots import make_subplots
 import numpy as np
 from modules import financial_performance
 import os
+from components import container
+
 
 #st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
 
 
 # Loading Poppins font from Google Fonts and applyng globally. Folder didn't work for me.
-# Load Poppins font globally
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
