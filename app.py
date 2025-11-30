@@ -1,40 +1,79 @@
 import streamlit as st
-import pandas as pd 
-import plotly.express as px 
-import plotly.graph_objects as go 
-from plotly.subplots import make_subplots 
-import numpy as np
-from modules import financial_performance
-
 st.set_page_config(
     page_title = "Water Utilities Dashboard",
     layout = "wide",
     initial_sidebar_state = "expanded"
 )
 
-#CSS will go here 
+import pandas as pd 
+import plotly.express as px 
+import plotly.graph_objects as go 
+from plotly.subplots import make_subplots 
+import numpy as np
+from modules import financial_performance
+import os
+from components.container import card_container
+
+
+#st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
+
+# Load Poppins globally and apply dark theme
 st.markdown("""
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-    .main-header {
-        font-size: 42px;
-        font-weight: bold;
-        color: #1f77b4;
-        text-align: center;
-        padding: 20px;
+    /* GLOBAL */
+    * {
+        font-family: 'Poppins', sans-serif !important;
+        color: #f8f8f2 !important;
     }
-    .sub-header {
-        font-size: 24px;
-        color: #2c3e50;
-        padding: 10px 0;
+
+    /* APP BACKGROUND */
+    html, body, .stApp, [data-testid="stAppViewContainer"] {
+        background-color: #212750 !important;
+        color: #f8f8f2 !important;
     }
-    .metric-card {
-        background-color: #f8f9fa;
-        padding: 15px;
-        border-radius: 10px;
-        border-left: 5px solid #1f77b4;
+
+    /* SIDEBAR */
+    [data-testid="stSidebar"] {
+        background-color: #1a1a3d !important;
+    }
+
+    [data-testid="stSidebar"] * {
+        color: #f8f8f2 !important;
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* HEADINGS */
+    h1, h2, h3, h4, h5, h6 {
+        color: #f8f8f2 !important;
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* METRICS */
+    [data-testid="metric-container"] {
+        background-color: #1a1a3d !important;
+        border: 1px solid #5681d0 !important;
+        border-radius: 12px !important;
+        padding: 18px !important;
+        color: #f8f8f2 !important;
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* STYLABLE CONTAINER (card_container) */
+    .stStylableContainer * {
+        color: #f8f8f2 !important;
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* Plotly graphs text */
+    [data-testid="stPlotlyChart"] * {
+        color: #f8f8f2 !important;
+        font-family: 'Poppins', sans-serif !important;
     }
 </style>
 """, unsafe_allow_html=True)
+
 
 @st.cache_data
 def load_data(): 
@@ -46,11 +85,14 @@ def load_data():
     s_service = pd.read_csv('data/s_service.csv')
     w_access = pd.read_csv('data/water_access.csv')
     w_service = pd.read_csv('data/water_service.csv')
+    
+    # Removing duplicate header rows that may exist in the data
+    billing = billing[billing['date'] != 'date'].reset_index(drop=True)
 
- # Parsing all dates
+    # Parsing all dates
     all_fin_service['date_MMYY'] = pd.to_datetime(all_fin_service['date_MMYY'], format='%b/%y')
     all_national['date_YY'] = pd.to_datetime(all_national['date_YY'], format='%Y')
-    billing['date_MMYY'] = pd.to_datetime(billing['date_MMYY'], format='%b/%y')
+    billing['date'] = pd.to_datetime(billing['date'], format='%Y-%m-%d')
     production['date_YYMMDD'] = pd.to_datetime(production['date_YYMMDD'], format='%Y/%m/%d')
     s_access['date_YY'] = pd.to_datetime(s_access['date_YY'], format='%Y')
     s_service['date_MMYY'] = pd.to_datetime(s_service['date_MMYY'], format='%b/%y')
@@ -78,7 +120,9 @@ data = load_data()
 
 # Sidebar 
 with st.sidebar:
+    st.image("assets/wasreb_logo_dashboard.jpg", width=60)
     st.title("Navigation")
+    
 
     page = st.radio(
         "Select a Page", 
@@ -129,7 +173,7 @@ if page == "Executive Overview":
     st.write("KPIs will go here...")
 
 elif page == "Financial Performance":
-    financial_performance.show(selected_countries)
+    financial_performance.show(selected_countries, year_range)
 
 elif page == "Service Delivery":
     st.write("Service data goes here...")
@@ -141,13 +185,18 @@ elif page == "Access":
     st.write("Access data goes here...")
 
 #For a report (just a test right now): 
+PDF_PATH = os.path.join(os.path.dirname(__file__), "assets", "report.pdf")
+
 with st.sidebar:
-    st.download_button(
-        label="📄 Download Report PDF",
-        data=open("assets/report.pdf", "rb").read(),
-        file_name="Water_Utility_Report.pdf",
-        mime="application/pdf"
-    )
+    if os.path.exists(PDF_PATH):
+        st.download_button(
+            label="📄 Download Report PDF",
+            data=open(PDF_PATH, "rb").read(),
+            file_name="Water_Utility_Report.pdf",
+            mime="application/pdf",
+        )
+    else:
+        st.error(f"Report not found at: {PDF_PATH}")
 
 #For an AI chatbot
 def dummy_function():
