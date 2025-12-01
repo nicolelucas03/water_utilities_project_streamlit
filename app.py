@@ -91,6 +91,44 @@ h1, h2, h3, h4, h5, h6 {
 .stApp [data-testid="stToolbar"] {
     background-color: #212750 !important;
 }
+            
+ /* Style buttons to match dark theme */
+.stButton > button {
+    background-color: #5681d0 !important;
+    color: #f8f8f2 !important;
+    border: 1px solid #5681d0 !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: 500 !important;
+    width: 100% !important;
+}
+
+.stButton > button:hover {
+    background-color: #6a92e0 !important;
+    border-color: #6a92e0 !important;
+    color: #ffffff !important;
+}
+
+.stButton > button:active {
+    background-color: #4a71c0 !important;
+}
+
+/* Style download button specifically */
+.stDownloadButton > button {
+    background-color: #5681d0 !important;
+    color: #f8f8f2 !important;
+    border: 1px solid #5681d0 !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: 500 !important;
+    width: 100% !important;
+}
+
+.stDownloadButton > button:hover {
+    background-color: #6a92e0 !important;
+    border-color: #6a92e0 !important;
+    color: #ffffff !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -205,19 +243,24 @@ elif page == "Access":
     st.write("Access data goes here...")
 
 #For a report (just a test right now): 
-PDF_PATH = os.path.join(os.path.dirname(__file__), "assets", "report.pdf")
+PDF_PATH = "assets/report.pdf"
 
 with st.sidebar:
-    if os.path.exists(PDF_PATH):
-        st.download_button(
-            label="📄 Download Report PDF",
-            data=open(PDF_PATH, "rb").read(),
-            file_name="Water_Utility_Report.pdf",
-            mime="application/pdf",
-        )
-    else:
-        st.error(f"Report not found at: {PDF_PATH}")
+    try:
+        if os.path.exists(PDF_PATH):
+            with open(PDF_PATH, "rb") as pdf_file:
+                st.download_button(
+                    label="📄 Download Report PDF",
+                    data=pdf_file,
+                    file_name="Water_Utility_Report.pdf",
+                    mime="application/pdf",
+                )
+        else:
+            st.warning("📄 Report PDF not available")
+    except Exception as e:
+        st.warning("📄 Report PDF not available")
 
+        
 #For an AI chatbot
 def dummy_function():
     st.write("Testing just for now")
