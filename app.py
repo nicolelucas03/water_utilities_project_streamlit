@@ -35,7 +35,8 @@ html, body, .stApp, [data-testid="stAppViewContainer"] {
 /* Hide Streamlit header and toolbar */
 header[data-testid="stHeader"] {
     background-color: #212750 !important;
-    display: none !important;
+    height: 0px !important;
+    min-height: 0px !important;
 }
 
 /* Hide the hamburger menu */
