@@ -129,6 +129,12 @@ h1, h2, h3, h4, h5, h6 {
     border-color: #6a92e0 !important;
     color: #ffffff !important;
 }
+
+[data-testid="collapsedControl"] {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
