@@ -907,8 +907,8 @@ def show(selected_countries, year_range=None):
 
 
     st.markdown("### Access Datasets")
-    with st.expander("Click to view billing.csv"): 
-        st.dataframe(df_billing)
-    
-    with st.expander("Click to view all_fin_service.csv"): 
-        st.dataframe(df_financial)
+    with st.expander("Click to view billing.csv", expanded=False): 
+        st.dataframe(df_billing, use_container_width=True, hide_index=True)
+
+    with st.expander("Click to view all_fin_service.csv", expanded=False): 
+        st.dataframe(df_financial, use_container_width=True, hide_index=True)
