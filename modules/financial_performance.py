@@ -105,8 +105,8 @@ def show(selected_countries, year_range=None):
     # ========================================================================
     st.markdown("### Revenue Breakdown & Trends")
 
-    tab1, tab2 = st.tabs(["Revenue Trend", "Revenue by Country"])
-    
+    tab1, tab2 = st.tabs(["Monthly Revenue", "Revenue Breakdown"])
+
     with tab1:
         # Monthly revenue trend by country
         monthly_by_country = filtered_billing.groupby(
@@ -131,9 +131,30 @@ def show(selected_countries, year_range=None):
             hovermode='x unified',
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            xaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)'),
-            yaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)', tickprefix='$', tickformat=',.0f'),
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+            font=dict(color='#f8f8f2'),
+            title_font=dict(color='#f8f8f2'),
+            xaxis=dict(
+                showgrid=True, 
+                gridcolor='rgba(128,128,128,0.2)',
+                color='#f8f8f2',
+                title_font=dict(color='#f8f8f2')
+            ),
+            yaxis=dict(
+                showgrid=True, 
+                gridcolor='rgba(128,128,128,0.2)', 
+                tickprefix='$', 
+                tickformat=',.0f',
+                color='#f8f8f2',
+                title_font=dict(color='#f8f8f2')
+            ),
+            legend=dict(
+                orientation="h", 
+                yanchor="bottom", 
+                y=1.02, 
+                xanchor="right", 
+                x=1,
+                font=dict(color='#f8f8f2')
+            )
         )
         
         fig_revenue.update_traces(line=dict(width=2.5), marker=dict(size=6))
@@ -164,15 +185,29 @@ def show(selected_countries, year_range=None):
         fig.update_traces(
             texttemplate='$%{text:,.0f}', 
             textposition='outside',
-            marker_color='#5681d0'
+            marker_color='#5681d0',
+            textfont=dict(color='#f8f8f2')
         )
         
         fig.update_layout(
             height=400,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            xaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)', tickprefix='$', tickformat=',.0f'),
-            yaxis=dict(showgrid=False)
+            font=dict(color='#f8f8f2'),
+            title_font=dict(color='#f8f8f2'),
+            xaxis=dict(
+                showgrid=True, 
+                gridcolor='rgba(128,128,128,0.2)', 
+                tickprefix='$', 
+                tickformat=',.0f',
+                color='#f8f8f2',
+                title_font=dict(color='#f8f8f2')
+            ),
+            yaxis=dict(
+                showgrid=False,
+                color='#f8f8f2',
+                title_font=dict(color='#f8f8f2')
+            )
         )
         
         st.plotly_chart(fig, use_container_width=True)
@@ -254,21 +289,30 @@ def show(selected_countries, year_range=None):
             line_color="rgba(0,255,0,0.5)",
             annotation_text="Target: 85%",
             annotation_position="top left",
+            annotation_font=dict(color='#f8f8f2'),
             secondary_y=True
         )
 
-        fig.update_xaxes(title_text="Month")
+        fig.update_xaxes(
+            title_text="Month",
+            color='#f8f8f2',
+            title_font=dict(color='#f8f8f2')
+        )
         fig.update_yaxes(
             title_text="Amount ($)", 
             secondary_y=False,
             showgrid=True, 
-            gridcolor='rgba(128,128,128,0.2)'
+            gridcolor='rgba(128,128,128,0.2)',
+            color='#f8f8f2',
+            title_font=dict(color='#f8f8f2')
         )
         fig.update_yaxes(
             title_text="Collection Rate (%)", 
             secondary_y=True, 
             range=[0, 110],
-            showgrid=False
+            showgrid=False,
+            color='#f8f8f2',
+            title_font=dict(color='#f8f8f2')
         )
 
         fig.update_layout(
@@ -276,7 +320,15 @@ def show(selected_countries, year_range=None):
             hovermode='x unified',
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+            font=dict(color='#f8f8f2'),
+            legend=dict(
+                orientation="h", 
+                yanchor="bottom", 
+                y=1.02, 
+                xanchor="right", 
+                x=1,
+                font=dict(color='#f8f8f2')
+            )
         )
 
         st.plotly_chart(fig, use_container_width=True)
@@ -324,23 +376,41 @@ def show(selected_countries, year_range=None):
         
         fig.update_traces(
             texttemplate='%{text:.1f}%', 
-            textposition='outside'
+            textposition='outside',
+            textfont=dict(color='#f8f8f2')
         )
         
         fig.add_vline(
             x=85, 
             line_dash="dash", 
             line_color="rgba(255,255,255,0.5)",
-            annotation_text="Target: 85%"
+            annotation_text="Target: 85%",
+            annotation_font=dict(color='#f8f8f2')
         )
         
         fig.update_layout(
             height=400,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            xaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)', range=[0, 110]),
-            yaxis=dict(showgrid=False),
-            showlegend=False
+            font=dict(color='#f8f8f2'),
+            title_font=dict(color='#f8f8f2'),
+            xaxis=dict(
+                showgrid=True, 
+                gridcolor='rgba(128,128,128,0.2)', 
+                range=[0, 110],
+                color='#f8f8f2',
+                title_font=dict(color='#f8f8f2')
+            ),
+            yaxis=dict(
+                showgrid=False,
+                color='#f8f8f2',
+                title_font=dict(color='#f8f8f2')
+            ),
+            showlegend=False,
+            coloraxis_colorbar=dict(
+                title=dict(text="Rate (%)", font=dict(color='#f8f8f2')),
+                tickfont=dict(color='#f8f8f2')
+            )
         )
         
         st.plotly_chart(fig, use_container_width=True)
@@ -384,14 +454,36 @@ def show(selected_countries, year_range=None):
             hover_data={'billed': ':$,.0f'}
         )
         
-        fig.add_hline(y=85, line_dash="dash", line_color="rgba(255,255,255,0.3)")
+        fig.add_hline(
+            y=85, 
+            line_dash="dash", 
+            line_color="rgba(255,255,255,0.3)",
+            annotation_text="Target: 85%",
+            annotation_font=dict(color='#f8f8f2')
+        )
         
         fig.update_layout(
             height=450,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            xaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)'),
-            yaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)')
+            font=dict(color='#f8f8f2'),
+            title_font=dict(color='#f8f8f2'),
+            xaxis=dict(
+                showgrid=True, 
+                gridcolor='rgba(128,128,128,0.2)',
+                color='#f8f8f2',
+                title_font=dict(color='#f8f8f2')
+            ),
+            yaxis=dict(
+                showgrid=True, 
+                gridcolor='rgba(128,128,128,0.2)',
+                color='#f8f8f2',
+                title_font=dict(color='#f8f8f2')
+            ),
+            coloraxis_colorbar=dict(
+                title=dict(text="Rate (%)", font=dict(color='#f8f8f2')),
+                tickfont=dict(color='#f8f8f2')
+            )
         )
         
         st.plotly_chart(fig, use_container_width=True)
@@ -453,8 +545,13 @@ def show(selected_countries, year_range=None):
             fig.update_layout(
                 height=400,
                 plot_bgcolor='rgba(0,0,0,0)',
-                paper_bgcolor='rgba(0,0,0,0)'
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='#f8f8f2'),
+                title_font=dict(color='#f8f8f2'),
+                legend=dict(font=dict(color='#f8f8f2'))
             )
+            
+            fig.update_traces(textfont=dict(color='#ffffff'))
             
             st.plotly_chart(fig, use_container_width=True)
         
@@ -476,14 +573,31 @@ def show(selected_countries, year_range=None):
                 }
             )
             
-            fig.update_traces(texttemplate='$%{text:,.0f}', textposition='outside')
+            fig.update_traces(
+                texttemplate='$%{text:,.0f}', 
+                textposition='outside',
+                textfont=dict(color='#f8f8f2')
+            )
             
             fig.update_layout(
                 height=400,
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
-                xaxis=dict(showgrid=False),
-                yaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)', tickprefix='$', tickformat=',.0f'),
+                font=dict(color='#f8f8f2'),
+                title_font=dict(color='#f8f8f2'),
+                xaxis=dict(
+                    showgrid=False,
+                    color='#f8f8f2',
+                    title_font=dict(color='#f8f8f2')
+                ),
+                yaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(128,128,128,0.2)', 
+                    tickprefix='$', 
+                    tickformat=',.0f',
+                    color='#f8f8f2',
+                    title_font=dict(color='#f8f8f2')
+                ),
                 showlegend=False
             )
             
@@ -530,22 +644,45 @@ def show(selected_countries, year_range=None):
                     text='cost_recovery'
                 )
                 
-                fig.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
+                fig.update_traces(
+                    texttemplate='%{text:.1f}%', 
+                    textposition='outside',
+                    textfont=dict(color='#f8f8f2')
+                )
                 
                 fig.add_vline(
                     x=100, 
                     line_dash="dash", 
                     line_color="rgba(255,255,255,0.5)",
-                    annotation_text="Break-even: 100%"
+                    annotation_text="Break-even: 100%",
+                    annotation_font=dict(color='#f8f8f2')
                 )
                 
                 fig.update_layout(
                     height=600,
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
-                    xaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)'),
-                    yaxis=dict(showgrid=False),
-                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                    font=dict(color='#f8f8f2'),
+                    title_font=dict(color='#f8f8f2'),
+                    xaxis=dict(
+                        showgrid=True, 
+                        gridcolor='rgba(128,128,128,0.2)',
+                        color='#f8f8f2',
+                        title_font=dict(color='#f8f8f2')
+                    ),
+                    yaxis=dict(
+                        showgrid=False,
+                        color='#f8f8f2',
+                        title_font=dict(color='#f8f8f2')
+                    ),
+                    legend=dict(
+                        orientation="h", 
+                        yanchor="bottom", 
+                        y=1.02, 
+                        xanchor="right", 
+                        x=1,
+                        font=dict(color='#f8f8f2')
+                    )
                 )
                 
                 st.plotly_chart(fig, use_container_width=True)
@@ -590,8 +727,25 @@ def show(selected_countries, year_range=None):
                     height=450,
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
-                    xaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)', tickprefix='$', tickformat=',.0f'),
-                    yaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)', tickprefix='$', tickformat=',.0f')
+                    font=dict(color='#f8f8f2'),
+                    title_font=dict(color='#f8f8f2'),
+                    xaxis=dict(
+                        showgrid=True, 
+                        gridcolor='rgba(128,128,128,0.2)', 
+                        tickprefix='$', 
+                        tickformat=',.0f',
+                        color='#f8f8f2',
+                        title_font=dict(color='#f8f8f2')
+                    ),
+                    yaxis=dict(
+                        showgrid=True, 
+                        gridcolor='rgba(128,128,128,0.2)', 
+                        tickprefix='$', 
+                        tickformat=',.0f',
+                        color='#f8f8f2',
+                        title_font=dict(color='#f8f8f2')
+                    ),
+                    legend=dict(font=dict(color='#f8f8f2'))
                 )
                 
                 st.plotly_chart(fig, use_container_width=True)
@@ -645,9 +799,30 @@ def show(selected_countries, year_range=None):
                 hovermode='x unified',
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
-                xaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)'),
-                yaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)', tickprefix='$', tickformat=',.0f'),
-                legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                font=dict(color='#f8f8f2'),  # ← ADD THIS
+                title_font=dict(color='#f8f8f2'),  # ← ADD THIS
+                xaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(128,128,128,0.2)',
+                    color='#f8f8f2',  # ← ADD THIS
+                    title_font=dict(color='#f8f8f2')  # ← ADD THIS
+                ),
+                yaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(128,128,128,0.2)', 
+                    tickprefix='$', 
+                    tickformat=',.0f',
+                    color='#f8f8f2',  # ← ADD THIS
+                    title_font=dict(color='#f8f8f2')  # ← ADD THIS
+                ),
+                legend=dict(
+                    orientation="h", 
+                    yanchor="bottom", 
+                    y=1.02, 
+                    xanchor="right", 
+                    x=1,
+                    font=dict(color='#f8f8f2')  # ← ADD THIS
+                )
             )
             
             st.plotly_chart(fig, use_container_width=True)
@@ -687,8 +862,22 @@ def show(selected_countries, year_range=None):
                     height=450,
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
-                    xaxis=dict(showgrid=False, tickangle=-45),
-                    yaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)', tickprefix='$', tickformat=',.0f')
+                    font=dict(color='#f8f8f2'),  # ← ADD THIS
+                    title_font=dict(color='#f8f8f2'),  # ← ADD THIS
+                    xaxis=dict(
+                        showgrid=False, 
+                        tickangle=-45,
+                        color='#f8f8f2',  # ← ADD THIS
+                        title_font=dict(color='#f8f8f2')  # ← ADD THIS
+                    ),
+                    yaxis=dict(
+                        showgrid=True, 
+                        gridcolor='rgba(128,128,128,0.2)', 
+                        tickprefix='$', 
+                        tickformat=',.0f',
+                        color='#f8f8f2',  # ← ADD THIS
+                        title_font=dict(color='#f8f8f2')  # ← ADD THIS
+                    )
                 )
                 
                 st.plotly_chart(fig, use_container_width=True)
@@ -718,8 +907,8 @@ def show(selected_countries, year_range=None):
 
 
     st.markdown("### Access Datasets")
-    with st.expander("Click to view billing.csv"): 
-        st.dataframe(df_billing)
-    
-    with st.expander("Click to view all_fin_service.csv"): 
-        st.dataframe(df_financial)
+    with st.expander("Click to view billing.csv", expanded=False): 
+        st.dataframe(df_billing, use_container_width=True, hide_index=True)
+
+    with st.expander("Click to view all_fin_service.csv", expanded=False): 
+        st.dataframe(df_financial, use_container_width=True, hide_index=True)

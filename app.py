@@ -19,59 +19,117 @@ from components.container import card_container
 #st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
 
 # Load Poppins globally and apply dark theme
+# Load Poppins globally and apply dark theme
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-    /* GLOBAL */
-    * {
-        font-family: 'Poppins', sans-serif !important;
-        color: #f8f8f2 !important;
-    }
+body, .stApp, .st-emotion-cache, [data-testid] * {
+    font-family: 'Poppins', sans-serif !important;
+    color: #f8f8f2 !important;
+}
 
-    /* APP BACKGROUND */
-    html, body, .stApp, [data-testid="stAppViewContainer"] {
-        background-color: #212750 !important;
-        color: #f8f8f2 !important;
-    }
+html, body, .stApp, [data-testid="stAppViewContainer"] {
+    background-color: #212750 !important;
+}
 
-    /* SIDEBAR */
-    [data-testid="stSidebar"] {
-        background-color: #1a1a3d !important;
-    }
+/* Hide Streamlit header and toolbar */
+header[data-testid="stHeader"] {
+    background-color: #212750 !important;
+    display: none !important;
+}
 
-    [data-testid="stSidebar"] * {
-        color: #f8f8f2 !important;
-        font-family: 'Poppins', sans-serif !important;
-    }
+/* Hide the hamburger menu */
+#MainMenu {
+    visibility: hidden !important;
+}
 
-    /* HEADINGS */
-    h1, h2, h3, h4, h5, h6 {
-        color: #f8f8f2 !important;
-        font-family: 'Poppins', sans-serif !important;
-    }
+/* Hide "Made with Streamlit" footer */
+footer {
+    visibility: hidden !important;
+}
 
-    /* METRICS */
-    [data-testid="metric-container"] {
-        background-color: #1a1a3d !important;
-        border: 1px solid #5681d0 !important;
-        border-radius: 12px !important;
-        padding: 18px !important;
-        color: #f8f8f2 !important;
-        font-family: 'Poppins', sans-serif !important;
-    }
+/* Remove top padding caused by hidden header */
+.main .block-container {
+    padding-top: 2rem !important;
+}
 
-    /* STYLABLE CONTAINER (card_container) */
-    .stStylableContainer * {
-        color: #f8f8f2 !important;
-        font-family: 'Poppins', sans-serif !important;
-    }
+main > div {
+    padding-top: 3rem !important;
+}
 
-    /* Plotly graphs text */
-    [data-testid="stPlotlyChart"] * {
-        color: #f8f8f2 !important;
-        font-family: 'Poppins', sans-serif !important;
-    }
+[data-testid="stSidebar"] {
+    background-color: #1a1a3d !important;
+    padding-top: 2rem !important;
+}
+
+[data-testid="stSidebar"] * {
+    color: #f8f8f2 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #f8f8f2 !important;
+}
+
+[data-testid="metric-container"] {
+    background-color: #1a1a3d !important;
+    border: 1px solid #5681d0 !important;
+    border-radius: 12px !important;
+    padding: 18px !important;
+}
+
+[data-testid="stWidgetLabel"] {
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+[data-testid="stPlotlyChart"] * {
+    color: #f8f8f2 !important;
+}
+
+/* Fix toolbar icons color when visible */
+.stApp [data-testid="stToolbar"] {
+    background-color: #212750 !important;
+}
+            
+ /* Style buttons to match dark theme */
+.stButton > button {
+    background-color: #5681d0 !important;
+    color: #f8f8f2 !important;
+    border: 1px solid #5681d0 !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: 500 !important;
+    width: 100% !important;
+}
+
+.stButton > button:hover {
+    background-color: #6a92e0 !important;
+    border-color: #6a92e0 !important;
+    color: #ffffff !important;
+}
+
+.stButton > button:active {
+    background-color: #4a71c0 !important;
+}
+
+/* Style download button specifically */
+.stDownloadButton > button {
+    background-color: #5681d0 !important;
+    color: #f8f8f2 !important;
+    border: 1px solid #5681d0 !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: 500 !important;
+    width: 100% !important;
+}
+
+.stDownloadButton > button:hover {
+    background-color: #6a92e0 !important;
+    border-color: #6a92e0 !important;
+    color: #ffffff !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -187,19 +245,24 @@ elif page == "Access":
     st.write("Access data goes here...")
 
 #For a report (just a test right now): 
-PDF_PATH = os.path.join(os.path.dirname(__file__), "assets", "report.pdf")
+PDF_PATH = "assets/report.pdf"
 
 with st.sidebar:
-    if os.path.exists(PDF_PATH):
-        st.download_button(
-            label="📄 Download Report PDF",
-            data=open(PDF_PATH, "rb").read(),
-            file_name="Water_Utility_Report.pdf",
-            mime="application/pdf",
-        )
-    else:
-        st.error(f"Report not found at: {PDF_PATH}")
+    try:
+        if os.path.exists(PDF_PATH):
+            with open(PDF_PATH, "rb") as pdf_file:
+                st.download_button(
+                    label="📄 Download Report PDF",
+                    data=pdf_file,
+                    file_name="Water_Utility_Report.pdf",
+                    mime="application/pdf",
+                )
+        else:
+            st.warning("📄 Report PDF not available")
+    except Exception as e:
+        st.warning("📄 Report PDF not available")
 
+        
 #For an AI chatbot
 def dummy_function():
     st.write("Testing just for now")
