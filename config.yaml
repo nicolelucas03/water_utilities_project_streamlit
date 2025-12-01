@@ -1,0 +1,17 @@
+cookie:
+  expiry_days: 0
+  key: auth-app-key
+  name: auth-app-key
+credentials:
+  usernames:
+    nicole:
+      email: nicole@gmail.com
+      failed_login_attempts: 0 # Will be managed automatically
+      first_name: Nicole
+      last_name: Lucas
+      logged_in: False # Will be managed automatically
+      password: abc # Will be hashed automatically
+      roles: # Optional
+      - admin
+      - viewer
+    

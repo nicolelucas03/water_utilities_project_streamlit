@@ -7,13 +7,16 @@ st.set_page_config(
 
 import pandas as pd 
 import plotly.express as px 
-import plotly.graph_objects as go 
+import plotly.graph_objects as go
 from plotly.subplots import make_subplots 
 import numpy as np
 from modules import financial_performance
 import os
 from components.container import card_container
-
+import streamlit_authenticator as stauth
+from streamlit_authenticator.utilities import LoginError
+import yaml
+from yaml.loader import SafeLoader
 
 #st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
 
@@ -139,142 +142,180 @@ h1, h2, h3, h4, h5, h6 {
 </style>
 """, unsafe_allow_html=True)
 
+#User Authentication
+# Load credentials from the YAML file
+with open("config.yaml") as file:
+     config = yaml.load(file, Loader=SafeLoader)
 
-@st.cache_data
-def load_data(): 
-    all_fin_service = pd.read_csv('data/all_fin_service.csv')
-    all_national = pd.read_csv('data/all_national.csv')
-    billing = pd.read_csv('data/billing.csv')
-    production = pd.read_csv('data/production.csv')
-    s_access = pd.read_csv('data/s_access.csv')
-    s_service = pd.read_csv('data/s_service.csv')
-    w_access = pd.read_csv('data/water_access.csv')
-    w_service = pd.read_csv('data/water_service.csv')
-    
-    # Removing duplicate header rows that may exist in the data
-    billing = billing[billing['date'] != 'date'].reset_index(drop=True)
+# Pre-hashing all plain text passwords once
+# stauth.Hasher.hash_passwords(config['credentials'])
 
-    # Parsing all dates
-    all_fin_service['date_MMYY'] = pd.to_datetime(all_fin_service['date_MMYY'], format='%b/%y')
-    all_national['date_YY'] = pd.to_datetime(all_national['date_YY'], format='%Y')
-    billing['date'] = pd.to_datetime(billing['date'], format='%Y-%m-%d')
-    production['date_YYMMDD'] = pd.to_datetime(production['date_YYMMDD'], format='%Y/%m/%d')
-    s_access['date_YY'] = pd.to_datetime(s_access['date_YY'], format='%Y')
-    s_service['date_MMYY'] = pd.to_datetime(s_service['date_MMYY'], format='%b/%y')
-    w_access['date_YY'] = pd.to_datetime(w_access['date_YY'], format='%Y')
-    w_service['date_MMYY'] = pd.to_datetime(w_service['date_MMYY'], format='%b/%y')
+# Initialize the authenticator
+authenticator = stauth.Authenticate(
+     config["credentials"],
+     config["cookie"]["name"],
+     config["cookie"]["key"],
+     config["cookie"]["expiry_days"],)
 
-# Fixing the uppercase/lowercase country names
-    dfs_to_normalize = [all_fin_service, all_national, billing, production, s_access, s_service, w_access, w_service]
-    for df in dfs_to_normalize:
-        if 'country' in df.columns:
-            df['country'] = df['country'].str.title()
+# Store the authenticator object in the session state
+st.session_state["authenticator"] = authenticator
+# Store the config in the session state so it can be updated later
+st.session_state["config"] = config
 
-    return {
-        'data/all_fin_service': all_fin_service,
-        'data/all_national': all_national,
-        'data/billing': billing,
-        'data/production': production,
-        'data/s_access': s_access,
-        'data/s_service': s_service,
-        'data/water_access': w_access,
-        'data/water_service': w_service
-    }
+try:
+    authenticator.login(location="main", key="login-demo-app-home")
+except LoginError as e:
+    st.error(e)
 
-data = load_data()
-
-# Sidebar 
-with st.sidebar:
-    st.image("assets/wasreb_logo_dashboard.jpg", width=60)
-    st.title("Navigation")
+#Conditional logic that will show content based on auth status
+if st.session_state["authentication_status"]:
+    # with st.sidebar: 
+        # st.write(f'Welcome, **{st.session_state["name"]}**')
     
 
-    page = st.radio(
-        "Select a Page", 
-        [
-            "Executive Overview", 
-            "Financial Performance",
-            "Service Delivery",
-            "Operations & Production",
-            "Access" 
-        ]
-    )
-
-    st.markdown("---")
-    st.subheader("Global Filters")
-
-
-#Filtering for countries
-    all_countries = set() 
-    for df in data.values(): 
-        if "country" in df.columns: 
-            all_countries.update(df["country"].unique())
-
-    selected_countries = st.multiselect( 
-        "Select Countries", 
-        options=sorted(all_countries),
-        default=None,
-    )
-
-    all_years = []
-    for df_name, df in data.items(): 
-        if "date_YY" in df.columns: 
-            all_years.extend(df["date_YY"].dt.year.unique())
-        elif "date_MMYY" in df.columns: 
-            all_years.extend(df["date_MMYY"].dt.year.unique())
-        elif "date_YYMMDD" in df.columns: 
-            all_years.extend(df["date_YYMMDD"].dt.year.unique())
     
-    if all_years:
-        year_range = st.slider(
-            "Select Year Range", 
-            min_value=int(min(all_years)),
-            max_value=int(max(all_years)),
-            value=(int(min(all_years)), int(max(all_years)))
+    @st.cache_data
+    def load_data(): 
+        all_fin_service = pd.read_csv('data/all_fin_service.csv')
+        all_national = pd.read_csv('data/all_national.csv')
+        billing = pd.read_csv('data/billing.csv')
+        production = pd.read_csv('data/production.csv')
+        s_access = pd.read_csv('data/s_access.csv')
+        s_service = pd.read_csv('data/s_service.csv')
+        w_access = pd.read_csv('data/water_access.csv')
+        w_service = pd.read_csv('data/water_service.csv')
+        
+        # Removing duplicate header rows that may exist in the data
+        billing = billing[billing['date'] != 'date'].reset_index(drop=True)
+
+        # Parsing all dates
+        all_fin_service['date_MMYY'] = pd.to_datetime(all_fin_service['date_MMYY'], format='%b/%y')
+        all_national['date_YY'] = pd.to_datetime(all_national['date_YY'], format='%Y')
+        billing['date'] = pd.to_datetime(billing['date'], format='%Y-%m-%d')
+        production['date_YYMMDD'] = pd.to_datetime(production['date_YYMMDD'], format='%Y/%m/%d')
+        s_access['date_YY'] = pd.to_datetime(s_access['date_YY'], format='%Y')
+        s_service['date_MMYY'] = pd.to_datetime(s_service['date_MMYY'], format='%b/%y')
+        w_access['date_YY'] = pd.to_datetime(w_access['date_YY'], format='%Y')
+        w_service['date_MMYY'] = pd.to_datetime(w_service['date_MMYY'], format='%b/%y')
+
+    # Fixing the uppercase/lowercase country names
+        dfs_to_normalize = [all_fin_service, all_national, billing, production, s_access, s_service, w_access, w_service]
+        for df in dfs_to_normalize:
+            if 'country' in df.columns:
+                df['country'] = df['country'].str.title()
+
+        return {
+            'data/all_fin_service': all_fin_service,
+            'data/all_national': all_national,
+            'data/billing': billing,
+            'data/production': production,
+            'data/s_access': s_access,
+            'data/s_service': s_service,
+            'data/water_access': w_access,
+            'data/water_service': w_service
+        }
+
+    data = load_data()
+
+    # Sidebar 
+    with st.sidebar:
+        st.image("assets/wasreb_logo_dashboard.jpg", width=60)
+        st.write(f'Welcome, **{st.session_state["name"]}**')
+        st.title("Navigation")
+        
+
+        page = st.radio(
+            "Select a Page", 
+            [
+                "Executive Overview", 
+                "Financial Performance",
+                "Service Delivery",
+                "Operations & Production",
+                "Access" 
+            ]
         )
 
-#This is for keeping the pages as radio buttons. Might change to pages?? 
-if page == "Executive Overview":
-    st.write("KPIs will go here...")
+        st.markdown("---")
+        st.subheader("Global Filters")
 
-elif page == "Financial Performance":
-    financial_performance.show(selected_countries, year_range)
 
-elif page == "Service Delivery":
-    st.write("Service data goes here...")
+    #Filtering for countries
+        all_countries = set() 
+        for df in data.values(): 
+            if "country" in df.columns: 
+                all_countries.update(df["country"].unique())
 
-elif page == "Operations & Production":
-    st.write("Production goes here...")
+        selected_countries = st.multiselect( 
+            "Select Countries", 
+            options=sorted(all_countries),
+            default=None,
+        )
 
-elif page == "Access":
-    st.write("Access data goes here...")
-
-#For a report (just a test right now): 
-PDF_PATH = "assets/report.pdf"
-
-with st.sidebar:
-    try:
-        if os.path.exists(PDF_PATH):
-            with open(PDF_PATH, "rb") as pdf_file:
-                st.download_button(
-                    label="📄 Download Report PDF",
-                    data=pdf_file,
-                    file_name="Water_Utility_Report.pdf",
-                    mime="application/pdf",
-                )
-        else:
-            st.warning("📄 Report PDF not available")
-    except Exception as e:
-        st.warning("📄 Report PDF not available")
-
+        all_years = []
+        for df_name, df in data.items(): 
+            if "date_YY" in df.columns: 
+                all_years.extend(df["date_YY"].dt.year.unique())
+            elif "date_MMYY" in df.columns: 
+                all_years.extend(df["date_MMYY"].dt.year.unique())
+            elif "date_YYMMDD" in df.columns: 
+                all_years.extend(df["date_YYMMDD"].dt.year.unique())
         
-#For an AI chatbot
-def dummy_function():
-    st.write("Testing just for now")
+        if all_years:
+            year_range = st.slider(
+                "Select Year Range", 
+                min_value=int(min(all_years)),
+                max_value=int(max(all_years)),
+                value=(int(min(all_years)), int(max(all_years)))
+            )
 
-with st.sidebar:
-    st.button(
-        label="🤖 Chat with an AI Bot",
-        on_click=dummy_function 
-    )
+    #This is for keeping the pages as radio buttons. Might change to pages?? 
+    if page == "Executive Overview":
+        st.write("KPIs will go here...")
 
+    elif page == "Financial Performance":
+        financial_performance.show(selected_countries, year_range)
+
+    elif page == "Service Delivery":
+        st.write("Service data goes here...")
+
+    elif page == "Operations & Production":
+        st.write("Production goes here...")
+
+    elif page == "Access":
+        st.write("Access data goes here...")
+
+    #For a report (just a test right now): 
+    PDF_PATH = "assets/report.pdf"
+
+    with st.sidebar:
+        try:
+            if os.path.exists(PDF_PATH):
+                with open(PDF_PATH, "rb") as pdf_file:
+                    st.download_button(
+                        label="📄 Download Report PDF",
+                        data=pdf_file,
+                        file_name="Water_Utility_Report.pdf",
+                        mime="application/pdf",
+                    )
+            else:
+                st.warning("📄 Report PDF not available")
+        except Exception as e:
+            st.warning("📄 Report PDF not available")
+
+            
+    #For an AI chatbot
+    def dummy_function():
+        st.write("Testing just for now")
+
+    with st.sidebar:
+        st.button(
+            label="🤖 Chat with an AI Bot",
+            on_click=dummy_function 
+        )
+    authenticator.logout('Logout', 'sidebar')
+
+elif st.session_state["authentication_status"] is False: 
+    st.error('Username/password is incorrect')
+
+elif st.session_state["authentication_status"] is None: 
+    st.info('Log in to access the dashboard')
