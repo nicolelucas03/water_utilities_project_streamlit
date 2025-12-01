@@ -22,50 +22,48 @@ st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-body, .stApp, .st-emotion-cache, [data-testid] * {
-    font-family: 'Poppins', sans-serif !important;
-    color: #f8f8f2 !important;
-}
+    body, .stApp, .st-emotion-cache, [data-testid] * {
+        font-family: 'Poppins', sans-serif !important;
+        color: #f8f8f2 !important;
+    }
 
-html, body, .stApp, [data-testid="stAppViewContainer"] {
-    background-color: #212750 !important;
-}
+    html, body, .stApp, [data-testid="stAppViewContainer"] {
+        background-color: #212750 !important;
+    }
 
-main > div {
-    padding-top: 3rem !important;
-}
+    main > div {
+        padding-top: 3rem !important;
+    }
 
-[data-testid="stSidebar"] {
-    background-color: #1a1a3d !important;
-    padding-top: 2rem !important;
-}
+    [data-testid="stSidebar"] {
+        background-color: #1a1a3d !important;
+        padding-top: 2rem !important;
+    }
 
-[data-testid="stSidebar"] * {
-    color: #f8f8f2 !important;
-}
+    [data-testid="stSidebar"] * {
+        color: #f8f8f2 !important;
+    }
 
-h1, h2, h3, h4, h5, h6 {
-    color: #f8f8f2 !important;
-}
+    h1, h2, h3, h4, h5, h6 {
+        color: #f8f8f2 !important;
+    }
 
-[data-testid="metric-container"] {
-    background-color: #1a1a3d !important;
-    border: 1px solid #5681d0 !important;
-    border-radius: 12px !important;
-    padding: 18px !important;
-}
+    [data-testid="metric-container"] {
+        background-color: #1a1a3d !important;
+        border: 1px solid #5681d0 !important;
+        border-radius: 12px !important;
+        padding: 18px !important;
+    }
 
-.css-17eq0hr,
-.css-1p4ihyy,
-[data-testid="stWidgetLabel"] {
-    visibility: hidden !important;
-    height: 0 !important;
-    overflow: hidden !important;
-}
+    [data-testid="stWidgetLabel"] {
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
 
-[data-testid="stPlotlyChart"] * {
-    color: #f8f8f2 !important;
-}
+    [data-testid="stPlotlyChart"] * {
+        color: #f8f8f2 !important;
+    }
 </style>
 
 """, unsafe_allow_html=True)
