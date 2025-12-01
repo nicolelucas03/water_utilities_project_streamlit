@@ -7,7 +7,9 @@ from typing import Literal
 import pandas as pd
 
 # Path to the data directory, relative to repo root
-DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+#DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+## Path to the data directory, relative to repo root
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "production_operations_data")
 
 
 # ---------- 1. RAW LOADERS ----------

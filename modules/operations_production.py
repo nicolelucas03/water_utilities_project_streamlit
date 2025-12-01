@@ -1,11 +1,11 @@
-# app.py
+# modules/operations_production.py
 
 import streamlit as st
 import altair as alt
 import pandas as pd
 from prophet import Prophet
 
-from preprocessing import preprocess_data as prep
+from . import prod_ops_preprocess_data as prep
 
 
 # ---------- CACHED DATA HELPERS ----------
@@ -44,7 +44,7 @@ def get_consumption_forecast(country: str, periods: int) -> pd.DataFrame:
     return forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]]
 
 
-# ---------- MAIN PAGE ----------
+# ---------- MAIN PAGE FUNCTION (called from app.py) ----------
 
 def production_operations_page():
     st.title("Production & Operations Dashboard")
@@ -53,7 +53,7 @@ def production_operations_page():
     df_country = get_monthly_nrw_country()
     df_zone = get_monthly_billing_country_zone()
 
-    # Sidebar country selector
+    # Sidebar country selector (local to this page)
     countries = sorted(df_country["country"].unique())
     selected_country = st.sidebar.selectbox("Country", countries)
 
@@ -69,7 +69,6 @@ def production_operations_page():
     country_data["nrw_3m_avg"] = country_data["nrw_pct"].rolling(3).mean()
     country_data["production_3m_avg"] = country_data["production_m3"].rolling(3).mean()
     country_data["consumption_3m_avg"] = country_data["billed_volume_m3"].rolling(3).mean()
-
     country_data["consumption_12m_avg"] = country_data["billed_volume_m3"].rolling(12).mean()
 
     latest = country_data.iloc[-1]
@@ -92,7 +91,7 @@ def production_operations_page():
     prod_yoy = compute_yoy_change(country_data, "production_m3")
     cons_yoy = compute_yoy_change(country_data, "billed_volume_m3")
 
-    # ---------- KPI CARDS (Option A: one card per indicator) ----------
+    # ---------- KPI CARDS ----------
 
     col1, col2, col3 = st.columns(3)
 
@@ -298,7 +297,6 @@ def production_operations_page():
 
         st.altair_chart(chart_fc, use_container_width=True)
 
-        # Smoothed trend chart
         st.markdown("### Smoothed Consumption Trend (Actuals Only)")
         trend_df = country_data[["month_start", "billed_volume_m3"]].copy()
         trend_df["cons_3m"] = trend_df["billed_volume_m3"].rolling(3).mean()
@@ -340,12 +338,10 @@ def production_operations_page():
 
         st.altair_chart(chart_trend, use_container_width=True)
 
-        # Seasonal pattern chart
         st.markdown("### Seasonal Consumption Pattern (Average by Month)")
         season_df = country_data.copy()
         season_df["month_name"] = season_df["month_start"].dt.strftime("%b")
 
-        # Order months correctly
         month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
@@ -429,7 +425,6 @@ def production_operations_page():
             st.info("No zone-level billing data available for this country.")
         else:
             zd = zone_data.copy()
-            # Avoid division by zero
             zd["collection_rate"] = zd.apply(
                 lambda row: row["paid_amount"] / row["billed_amount"]
                 if row["billed_amount"] > 0
@@ -537,9 +532,7 @@ def production_operations_page():
                         tooltip=[
                             "zone:N",
                             "billed_volume_m3:Q",
-                            alt.Tooltip(
-                                "volume_share:Q", title="Share", format=".1%"
-                            ),
+                            alt.Tooltip("volume_share:Q", title="Share", format=".1%"),
                         ],
                     )
                     .properties(height=350)
@@ -552,14 +545,3 @@ def production_operations_page():
                         mix_df[["zone", "billed_volume_m3", "volume_share"]],
                         use_container_width=True,
                     )
-
-
-# ---------- MAIN ----------
-
-def main():
-    st.set_page_config(page_title="Production & Operations", layout="wide")
-    production_operations_page()
-
-
-if __name__ == "__main__":
-    main()

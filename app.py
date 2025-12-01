@@ -11,6 +11,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots 
 import numpy as np
 from modules import financial_performance
+from modules.operations_production import production_operations_page
 import os
 from components.container import card_container
 
@@ -179,7 +180,8 @@ elif page == "Service Delivery":
     st.write("Service data goes here...")
 
 elif page == "Operations & Production":
-    st.write("Production goes here...")
+    #st.write("Production goes here...")
+    production_operations_page()
 
 elif page == "Access":
     st.write("Access data goes here...")
