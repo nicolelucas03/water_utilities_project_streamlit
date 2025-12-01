@@ -18,6 +18,7 @@ from components.container import card_container
 #st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
 
 # Load Poppins globally and apply dark theme
+# Load Poppins globally and apply dark theme
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -29,6 +30,27 @@ body, .stApp, .st-emotion-cache, [data-testid] * {
 
 html, body, .stApp, [data-testid="stAppViewContainer"] {
     background-color: #212750 !important;
+}
+
+/* Hide Streamlit header and toolbar */
+header[data-testid="stHeader"] {
+    background-color: #212750 !important;
+    display: none !important;
+}
+
+/* Hide the hamburger menu */
+#MainMenu {
+    visibility: hidden !important;
+}
+
+/* Hide "Made with Streamlit" footer */
+footer {
+    visibility: hidden !important;
+}
+
+/* Remove top padding caused by hidden header */
+.main .block-container {
+    padding-top: 2rem !important;
 }
 
 main > div {
@@ -63,6 +85,11 @@ h1, h2, h3, h4, h5, h6 {
 
 [data-testid="stPlotlyChart"] * {
     color: #f8f8f2 !important;
+}
+
+/* Fix toolbar icons color when visible */
+.stApp [data-testid="stToolbar"] {
+    background-color: #212750 !important;
 }
 </style>
 """, unsafe_allow_html=True)
