@@ -17,20 +17,20 @@ Live Dashboard: [Streamlit Cloud Link](https://water-utilities-dashboard.streaml
 
 ## Tech Stack
 #### Core Technologies
-- Python: Primary programming language
-- Streamlit: Web application framework
-- Plotly: Interactive data visualization 
-- Pandas: Data manipulation and analysis 
-- NumPy: Numerical computing 
+- **Python**: Primary programming language
+- **Streamlit**: Web application framework
+- **Plotly**: Interactive data visualization 
+- **Pandas**: Data manipulation and analysis 
+- **NumPy**: Numerical computing 
 
 #### Styling/UI
-- CSS: Custom dark blue theme styling 
-- Poppins Font: Modern, clean typography 
-- Streamlit Extras: Enhanced UI components
+- **CSS**: Custom dark blue theme styling 
+- **Poppins Font**: Modern, clean typography 
+- **Streamlit Extras**: Enhanced UI components
 
 #### Deployment
-- Streamlit Community Cloud: Production hosting 
-- Git/GitHub: Version control and collaboration
+- **Streamlit Community Cloud**: Production hosting 
+- **Git/GitHub**: Version control and collaboration
 
  ## Installation 
  Prerequisites 
