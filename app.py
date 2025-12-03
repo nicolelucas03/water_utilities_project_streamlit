@@ -6,6 +6,9 @@ from plotly.subplots import make_subplots
 import numpy as np
 from modules import financial_performance
 
+# import the bot and the mini datasets summary inside modules/chatbot.py
+from modules.chatbot import bot, DATASETS   
+
 st.set_page_config(
     page_title = "Water Utilities Dashboard",
     layout = "wide",
@@ -149,13 +152,88 @@ with st.sidebar:
         mime="application/pdf"
     )
 
-#For an AI chatbot
-def dummy_function():
-    st.write("Testing just for now")
 
-with st.sidebar:
-    st.button(
-        label="🤖 Chat with an AI Bot",
-        on_click=dummy_function 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if page == "Executive Overview":
+
+    st.markdown("---")
+    st.markdown("## AI Water Data Assistant")
+
+    st.info(
+        """
+        **Welcome to the AI Water Data Assistant!**
+
+        Ask natural-language questions about the loaded WASH datasets.
+        The assistant uses semantic search + planning + computation to 
+        answer using real data.
+
+        Try asking:
+        - *Did sewer complaints increase or decrease in Lesotho from 2020 to 2022?*
+        - *Which country conducts the most E. coli tests on average per month?*
+        - *What percentage of Cameroonians had safely managed water in 2020 compared to 2022?*
+        - *Which country has the highest average safely managed sanitation coverage from 2018-2022?*
+        """
     )
 
+    # Chat memory
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+
+    st.markdown("### Ask a Question")
+    user_query = st.text_input("Type your question:")
+
+
+
+    if st.button("Ask the Bot"):
+        if user_query.strip():
+            answer = bot.answer(user_query)
+            st.session_state.chat_history.append(("You", user_query))
+            st.session_state.chat_history.append(("Bot", answer))
+
+    st.markdown("### Chat History")
+    for speaker, msg in st.session_state.chat_history:
+        if speaker == "You":
+            st.markdown(f"**🧑 You:** {msg}")
+        else:
+            st.markdown(f"**🤖 Bot:** {msg}")

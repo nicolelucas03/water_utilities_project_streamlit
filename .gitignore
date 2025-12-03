@@ -27,3 +27,39 @@ Thumbs.db
 
 # Project specific
 *.pdf
+
+
+# 
+secrets.toml
+
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.ipynb_checkpoints/
+
+# Environments
+.env
+.venv
+venv/
+
+# Secrets
+secrets.toml
+*.key
+*.env
+
+# ChromaDB vector index
+chroma_db/
+
+# Streamlit cache
+.streamlit/
+
+
+chroma_db/
+modules/rag_store.py
