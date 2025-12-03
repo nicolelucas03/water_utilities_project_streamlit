@@ -12,6 +12,7 @@ from plotly.subplots import make_subplots
 import numpy as np
 from modules import financial_performance
 from modules.operations_production import production_operations_page
+from modules import access
 import os
 from components.container import card_container
 
@@ -242,7 +243,8 @@ elif page == "Operations & Production":
     production_operations_page()
 
 elif page == "Access":
-    st.write("Access data goes here...")
+    #st.write("Access data goes here...")
+    access.render_access_page(selected_countries, year_range)
 
 #For a report (just a test right now): 
 PDF_PATH = "assets/report.pdf"
