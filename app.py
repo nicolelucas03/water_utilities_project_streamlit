@@ -33,7 +33,7 @@ st.markdown("""
 
 load_css("styles/dashboard.css")
 
-#USER AUTHENTICATION
+#USER AUTHENTICATION: HMM, MAYBE CHANGE UI? 
 with open("config.yaml") as file:
      config = yaml.load(file, Loader=SafeLoader)
 
@@ -70,7 +70,6 @@ if st.session_state.get("authentication_status") is None:
             st.error(e)
 
 elif st.session_state["authentication_status"] is False:
-    # Also need to show tabs when authentication fails
     tab1, tab2 = st.tabs(["Login", "Register"])
     
     with tab1:
