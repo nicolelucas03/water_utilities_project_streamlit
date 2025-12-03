@@ -219,24 +219,31 @@ class WaterSemanticAssistant:
         context_text = "\n\n---\n\n".join(context_snippets)
 
         system_msg = {
-        "role": "system",
-        "content": (
-            "You are a data analysis planner for water and sanitation datasets.\n"
-            "You see:\n"
-            "1) A user question.\n"
-            "2) Documentation about datasets and columns.\n\n"
-            "You must output ONLY a JSON object describing HOW to compute the answer.\n"
-            "Do NOT include any prose explanation. JSON only.\n\n"
-            "Planning rules:\n"
-            "- If the user asks about percentages or coverage, prefer columns whose names contain '_pct' or 'percentage'.\n"
-            "- If the question compares countries (e.g., cameroon vs Uganda), create one metric per country,\n"
-            "  using a 'country' filter where appropriate.\n"
-            "- If the question asks about 'over the years' or 'on average', aggregate over all available years\n"
-            "  using agg='mean' on the relevant percentage column.\n"
-            "- You must use dataset and column names exactly as seen in the context snippets.\n"
-            "- Use filters to restrict by country when relevant (e.g., column='country', op='==', value='cameroon').\n"
-        )
-    }
+    "role": "system",
+    "content": (
+        "You are a data analysis planner for water and sanitation datasets.\n"
+        "You see:\n"
+        "1) A user question.\n"
+        "2) Documentation about datasets and columns.\n\n"
+        "You must output ONLY a JSON object describing HOW to compute the answer.\n"
+        "Do NOT include any prose explanation. JSON only.\n\n"
+        "Planning rules:\n"
+        "- If the user asks about percentages or coverage, prefer columns whose names contain '_pct' or 'percentage'.\n"
+        "- If the question compares countries (e.g., Cameroon vs Uganda), create one metric per country,\n"
+        "  using a 'country' filter where appropriate.\n"
+        "- If the question asks about 'over the years' or 'on average', aggregate over all available years\n"
+        "  using agg='mean' on the relevant percentage column.\n"
+        "- If the user asks about a **single specific year** (e.g. 'in 2020'), either:\n"
+        "    * set time_scope.type = 'year' and time_scope.year = that year, OR\n"
+        "    * add a filter on the appropriate date column (e.g. column='date_YY', op='==', value=2020).\n"
+        "- If the user **compares two explicit years** (e.g. '2020 compared to 2022'), create **two separate metrics**:\n"
+        "    * one metric with a filter for the first year (e.g. date_YY == 2020)\n"
+        "    * and one metric with a filter for the second year (e.g. date_YY == 2022)\n"
+        "  In that case, you can keep time_scope.type = 'all'.\n"
+        "- You must use dataset and column names exactly as seen in the context snippets.\n"
+        "- Use filters to restrict by country when relevant (e.g., column='country', op='==', value='Cameroon').\n"
+    )
+}
 
         user_msg = {
             "role": "user",

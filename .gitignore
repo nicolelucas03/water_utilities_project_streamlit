@@ -1,38 +1,3 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-ENV/
-*.egg-info/
-dist/
-build/
-
-# Streamlit
-.streamlit/
-.streamlit/secrets.toml
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Project specific
-*.pdf
-
-
-# 
-secrets.toml
-
-
 # OS / editor files
 .DS_Store
 Thumbs.db
@@ -46,20 +11,35 @@ __pycache__/
 
 # Environments
 .env
-.venv
+.venv/
 venv/
+ENV/
 
 # Secrets
 secrets.toml
 *.key
 *.env
+credentials.py
 
-# ChromaDB vector index
-chroma_db/
+# Project specific
+*.pdf
 
-# Streamlit cache
+# Streamlit
 .streamlit/
 
-
+# ChromaDB vector index (RAG store)
 chroma_db/
 modules/rag_store.py
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+config.yaml
