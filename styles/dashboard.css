@@ -1,0 +1,132 @@
+body, .stApp, .st-emotion-cache, [data-testid] * {
+    font-family: 'Poppins', sans-serif !important;
+    color: #f8f8f2 !important;
+}
+
+html, body, .stApp, [data-testid="stAppViewContainer"] {
+    background-color: #212750 !important;
+}
+
+/* Hide Streamlit header and toolbar */
+header[data-testid="stHeader"] {
+    background-color: #212750 !important;
+    height: 0px !important;
+    min-height: 0px !important;
+}
+
+/* Hide the hamburger menu */
+#MainMenu {
+    visibility: hidden !important;
+}
+
+/* Hide "Made with Streamlit" footer */
+footer {
+    visibility: hidden !important;
+}
+
+/* Remove top padding caused by hidden header */
+.main .block-container {
+    padding-top: 2rem !important;
+}
+
+main > div {
+    padding-top: 3rem !important;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #1a1a3d !important;
+    padding-top: 2rem !important;
+}
+
+[data-testid="stSidebar"] * {
+    color: #f8f8f2 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #f8f8f2 !important;
+}
+
+[data-testid="metric-container"] {
+    background-color: #1a1a3d !important;
+    border: 1px solid #5681d0 !important;
+    border-radius: 12px !important;
+    padding: 18px !important;
+}
+
+/* Commented out - uncomment if needed */
+/*
+[data-testid="stWidgetLabel"] {
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+*/
+
+[data-testid="stPlotlyChart"] * {
+    color: #f8f8f2 !important;
+}
+
+/* Fix toolbar icons color when visible */
+.stApp [data-testid="stToolbar"] {
+    background-color: #212750 !important;
+}
+            
+/* Style buttons to match dark theme */
+.stButton > button {
+    background-color: #5681d0 !important;
+    color: #f8f8f2 !important;
+    border: 1px solid #5681d0 !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: 500 !important;
+    width: 100% !important;
+}
+
+.stButton > button:hover {
+    background-color: #6a92e0 !important;
+    border-color: #6a92e0 !important;
+    color: #ffffff !important;
+}
+
+.stButton > button:active {
+    background-color: #4a71c0 !important;
+}
+
+/* Style download button specifically */
+.stDownloadButton > button {
+    background-color: #5681d0 !important;
+    color: #f8f8f2 !important;
+    border: 1px solid #5681d0 !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: 500 !important;
+    width: 100% !important;
+}
+
+.stDownloadButton > button:hover {
+    background-color: #6a92e0 !important;
+    border-color: #6a92e0 !important;
+    color: #ffffff !important;
+}
+
+[data-testid="collapsedControl"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.stButton > button[kind="secondary"] {
+    background-color: #1a1a3d !important;
+    color: #f8f8f2 !important;
+    border: 1px solid #3a3a5d !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: 500 !important;
+    width: 100% !important;
+}
+
+.stButton > button[kind="secondary"]:hover {
+    background-color: #2a2a4d !important;
+    border-color: #4a4a6d !important;
+    color: #ffffff !important;
+}
