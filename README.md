@@ -11,6 +11,7 @@ The Water Utilities Dashboard is a comprehensive business intelligence tool desi
     - Operations and Production 
     - Access
 - AI Intergration for Downloading Reports and AI Bot
+- User Authentication 
 
 ## Demo
 Live Dashboard: [Streamlit Cloud Link](https://water-utilities-dashboard.streamlit.app/)

@@ -27,3 +27,6 @@ Thumbs.db
 
 # Project specific
 *.pdf
+
+#API KEYS
+credentials.py

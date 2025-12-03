@@ -100,9 +100,8 @@ def show(selected_countries, year_range=None):
         with card_container(key="kpi_metric6"): 
             st.metric("Avg Revenue/Customer", f"${avg_revenue_per_customer:,.0f}")
 
-    # ========================================================================
+
     # SECTION 1: Revenue Breakdown & Trends
-    # ========================================================================
     st.markdown("### Revenue Breakdown & Trends")
 
     tab1, tab2 = st.tabs(["Monthly Revenue", "Revenue Breakdown"])
@@ -222,9 +221,8 @@ def show(selected_countries, year_range=None):
         
         st.dataframe(country_display, hide_index=True, use_container_width=True)
 
-    # ========================================================================
+    
     # SECTION 2: Collection Efficiency & Payment Analysis
-    # ========================================================================
     st.markdown("### Collection Efficiency & Payment Analysis")
 
     tab1, tab2 = st.tabs(["Billed vs Paid Analysis", "Collection Rate by Country"])
@@ -350,7 +348,7 @@ def show(selected_countries, year_range=None):
                 st.metric("Current Outstanding", f"${total_outstanding:,.0f}")
 
     with tab2:
-        # Collection rate by country - simple and clean
+        # Collection rate by country
         country_collection = filtered_billing.groupby('country').agg({
             'billed': 'sum',
             'paid': 'sum'
@@ -415,9 +413,8 @@ def show(selected_countries, year_range=None):
         
         st.plotly_chart(fig, use_container_width=True)
 
-    # ========================================================================
+
     # SECTION 3: Customer Segmentation & Behavior
-    # ========================================================================
     st.markdown("### Customer Segmentation & Behavior")
 
     tab1, tab2 = st.tabs(["Consumption vs Payment Matrix", "Customer Value Segmentation"])
@@ -434,7 +431,6 @@ def show(selected_countries, year_range=None):
             customer_analysis['paid'] / customer_analysis['billed'] * 100
         ).clip(0, 100)
         
-        # Sample for visualization (too many points will slow down)
         sample_size = min(2000, len(customer_analysis))
         customer_sample = customer_analysis.sample(sample_size) if len(customer_analysis) > sample_size else customer_analysis
         
@@ -489,7 +485,6 @@ def show(selected_countries, year_range=None):
         st.plotly_chart(fig, use_container_width=True)
 
     with tab2:
-        # Customer segmentation
         customer_analysis['segment'] = 'Standard'
         customer_analysis.loc[
             (customer_analysis['payment_rate'] >= 90) & (customer_analysis['billed'] > customer_analysis['billed'].median()),
@@ -508,7 +503,6 @@ def show(selected_countries, year_range=None):
             'segment'
         ] = 'Problem'
         
-        # Segment summary
         segment_summary = customer_analysis.groupby('segment').agg({
             'customer_id': 'count',
             'paid': 'sum',
@@ -518,7 +512,6 @@ def show(selected_countries, year_range=None):
         segment_summary.columns = ['Segment', 'Customer Count', 'Total Revenue', 'Avg Payment Rate']
         segment_summary['Revenue %'] = (segment_summary['Total Revenue'] / segment_summary['Total Revenue'].sum() * 100)
         
-        # Reorder segments
         segment_order = ['Premium', 'Good', 'Standard', 'At Risk', 'Problem']
         segment_summary['Segment'] = pd.Categorical(segment_summary['Segment'], categories=segment_order, ordered=True)
         segment_summary = segment_summary.sort_values('Segment')
@@ -526,7 +519,6 @@ def show(selected_countries, year_range=None):
         col1, col2 = st.columns(2)
         
         with col1:
-            # Pie chart
             fig = px.pie(
                 segment_summary,
                 values='Customer Count',
@@ -556,7 +548,6 @@ def show(selected_countries, year_range=None):
             st.plotly_chart(fig, use_container_width=True)
         
         with col2:
-            # Bar chart of revenue
             fig = px.bar(
                 segment_summary,
                 x='Segment',
@@ -603,7 +594,6 @@ def show(selected_countries, year_range=None):
             
             st.plotly_chart(fig, use_container_width=True)
         
-        # Summary table
         st.markdown("**Segment Performance Summary**")
         display_segment = segment_summary.copy()
         display_segment['Total Revenue'] = display_segment['Total Revenue'].apply(lambda x: f"${x:,.0f}")
@@ -612,9 +602,8 @@ def show(selected_countries, year_range=None):
         
         st.dataframe(display_segment, hide_index=True, use_container_width=True)
 
-    # ========================================================================
+
     # SECTION 4: Sewer Service & Financial Performance
-    # ========================================================================
     st.markdown("### Sewer Service & Financial Performance")
 
     if len(filtered_financial) > 0:
@@ -754,9 +743,8 @@ def show(selected_countries, year_range=None):
     else:
         st.info("No financial service data available for selected filters")
 
-    # ========================================================================
+    
     # SECTION 5: Operational Cost Analysis
-    # ========================================================================
     st.markdown("### Operational Cost Analysis")
 
     if len(filtered_financial) > 0:
@@ -799,21 +787,21 @@ def show(selected_countries, year_range=None):
                 hovermode='x unified',
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
-                font=dict(color='#f8f8f2'),  # ← ADD THIS
-                title_font=dict(color='#f8f8f2'),  # ← ADD THIS
+                font=dict(color='#f8f8f2'), 
+                title_font=dict(color='#f8f8f2'),  
                 xaxis=dict(
                     showgrid=True, 
                     gridcolor='rgba(128,128,128,0.2)',
-                    color='#f8f8f2',  # ← ADD THIS
-                    title_font=dict(color='#f8f8f2')  # ← ADD THIS
+                    color='#f8f8f2',  
+                    title_font=dict(color='#f8f8f2')  
                 ),
                 yaxis=dict(
                     showgrid=True, 
                     gridcolor='rgba(128,128,128,0.2)', 
                     tickprefix='$', 
                     tickformat=',.0f',
-                    color='#f8f8f2',  # ← ADD THIS
-                    title_font=dict(color='#f8f8f2')  # ← ADD THIS
+                    color='#f8f8f2',  
+                    title_font=dict(color='#f8f8f2')  
                 ),
                 legend=dict(
                     orientation="h", 
@@ -821,7 +809,7 @@ def show(selected_countries, year_range=None):
                     y=1.02, 
                     xanchor="right", 
                     x=1,
-                    font=dict(color='#f8f8f2')  # ← ADD THIS
+                    font=dict(color='#f8f8f2') 
                 )
             )
             
@@ -862,21 +850,21 @@ def show(selected_countries, year_range=None):
                     height=450,
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
-                    font=dict(color='#f8f8f2'),  # ← ADD THIS
-                    title_font=dict(color='#f8f8f2'),  # ← ADD THIS
+                    font=dict(color='#f8f8f2'),  
+                    title_font=dict(color='#f8f8f2'), 
                     xaxis=dict(
                         showgrid=False, 
                         tickangle=-45,
-                        color='#f8f8f2',  # ← ADD THIS
-                        title_font=dict(color='#f8f8f2')  # ← ADD THIS
+                        color='#f8f8f2',  
+                        title_font=dict(color='#f8f8f2')  
                     ),
                     yaxis=dict(
                         showgrid=True, 
                         gridcolor='rgba(128,128,128,0.2)', 
                         tickprefix='$', 
                         tickformat=',.0f',
-                        color='#f8f8f2',  # ← ADD THIS
-                        title_font=dict(color='#f8f8f2')  # ← ADD THIS
+                        color='#f8f8f2', 
+                        title_font=dict(color='#f8f8f2')  
                     )
                 )
                 
