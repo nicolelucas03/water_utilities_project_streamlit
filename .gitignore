@@ -12,7 +12,6 @@ dist/
 build/
 
 # Streamlit
-.streamlit/
 .streamlit/secrets.toml
 
 # IDE
