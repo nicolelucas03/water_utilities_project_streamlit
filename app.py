@@ -109,7 +109,7 @@ elif st.session_state["authentication_status"]:
         if user_role == 'country' and user_country:
             st.caption(f"Country: {user_country}")
         
-        st.markdown("---")
+        # st.markdown("---")
 
         if user_role == 'admin':
             page_options = [
@@ -118,7 +118,7 @@ elif st.session_state["authentication_status"]:
                 "Service Delivery",
                 "Operations & Production",
                 "Access",
-                "**Admin Panel**"  # Only show for admins
+                "Admin Panel"  # Only show for admins
             ]
         else:
             page_options = [
@@ -192,13 +192,14 @@ elif st.session_state["authentication_status"]:
     elif page == "Access":
         st.write("Access data goes here...")
 
-    elif page == "**Admin Panel**":
+    elif page == "Admin Panel":
         from modules import admin_panel
         admin_panel.show(config)
 
     PDF_PATH = "assets/report.pdf"
 
     with st.sidebar:
+        st.markdown("---")
         try:
             if os.path.exists(PDF_PATH):
                 with open(PDF_PATH, "rb") as pdf_file:
