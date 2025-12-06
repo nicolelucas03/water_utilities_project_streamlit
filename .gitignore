@@ -28,4 +28,5 @@ Thumbs.db
 *.pdf
 
 #API KEYS
-credentials.py
+credentials.pysecrets.toml
+chroma_db/
