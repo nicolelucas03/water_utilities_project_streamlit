@@ -1,25 +1,28 @@
 import streamlit as st
-st.set_page_config(
-    page_title = "Water Utilities Dashboard",
-    layout = "wide",
-    initial_sidebar_state = "expanded"
-)
-
 import pandas as pd 
 import plotly.express as px 
-import plotly.graph_objects as go
+import plotly.graph_objects as go 
 from plotly.subplots import make_subplots 
 import numpy as np
+from modules import financial_performance
 import os
 import streamlit_authenticator as stauth
 import yaml
-
 from modules import financial_performance
 from modules import overview
 from modules.login import show_login_page
 from components.container import card_container
 from streamlit_authenticator.utilities import LoginError
 from yaml.loader import SafeLoader
+from modules.chatbot import bot, DATASETS   
+
+
+st.set_page_config(
+    page_title = "Water Utilities Dashboard",
+    layout = "wide",
+    initial_sidebar_state = "expanded"
+)
+
 
 api_key = st.secrets["API_KEY_LOGIN"]
 st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
@@ -180,6 +183,48 @@ elif st.session_state["authentication_status"]:
     if page == "Executive Overview":
         overview.show()
 
+        # 🔽 ADD CHATBOT HERE
+        st.markdown("---")
+        st.markdown("## AI Water Data Assistant")
+
+        st.info(
+            """
+            **Welcome to the AI Water Data Assistant!**
+
+            Ask natural-language questions about the loaded water utility datasets.
+            The assistant uses semantic search + planning + computation to 
+            answer using real data. Ask simple, specific questions!
+
+            Try asking:
+            - *Does cameroon or malawi on average have a larger percentage of people under the safely managed water category?*
+            - *What percentage of Cameroonians had safely managed water in 2020 compared to 2022?*
+            """
+        )
+
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = []
+
+        st.markdown("### Ask a Question")
+        user_query = st.text_input("Type your question:")
+
+        if st.button("Ask the Bot"):
+            if user_query.strip():
+                answer = bot.answer(user_query)
+                st.session_state.chat_history.append(("You", user_query))
+                st.session_state.chat_history.append(("Bot", answer))
+
+        st.markdown("### Chat History")
+        # Display newest messages at the top
+        for speaker, msg in reversed(st.session_state.chat_history):
+            if speaker == "You":
+                st.markdown(f"**🧑 You:** {msg}")
+            else:
+                st.markdown(f"**🤖 Bot:** {msg}")
+                
+            st.markdown("<hr style='margin:5px 0;'>", unsafe_allow_html=True)
+
+
+
     elif page == "Financial Performance":
         financial_performance.show(selected_countries, year_range)
 
@@ -224,9 +269,9 @@ elif st.session_state["authentication_status"]:
             on_click=dummy_function, 
             type="primary"
         )
-
+    
     with st.sidebar: 
         st.markdown("---")
         if st.session_state.get('authentication_status'):  
             authenticator.logout("Logout", "sidebar")
-            
+ 
