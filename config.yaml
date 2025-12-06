@@ -1,0 +1,30 @@
+cookie:
+  expiry_days: 30
+  key: auth-app-key
+  name: auth-app-key
+credentials:
+  usernames:
+    asmith:
+      country: null
+      email: asmith@gmail.com
+      name: Alice Smith
+      password: $2b$12$lgRn4FhftkZ1m.O4tQCwYub2tcZoLTQv29XGomE/f1hygmivEdIya
+      role: country
+    michael:
+      country: Cameroon
+      email: michael@gmail.com
+      first_name: Michael
+      last_name: Jackson
+      logged_in: false
+      password: $2b$12$TUdI/m7rjGUmIOLSoRil9eFntgUJpEVEW5rmSXPY3L.AJrHWRqLO.
+      password_hint: name and numbers
+      role: country
+      roles: null
+    nicole:
+      email: nicole@gmail.com
+      failed_login_attempts: 0
+      first_name: Nicole
+      last_name: Jackson
+      logged_in: false
+      password: nicoleL@123
+      role: admin
