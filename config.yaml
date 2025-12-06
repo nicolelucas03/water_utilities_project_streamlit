@@ -24,7 +24,7 @@ credentials:
       email: nicole@gmail.com
       failed_login_attempts: 0
       first_name: Nicole
-      last_name: Lucas
+      last_name: Jackson
       logged_in: false
-      password: $2b$12$OW2XlJ6KvUYzUho173vdReZtiEOoBSSTiImat3IipbSaL5WtR/S6u
+      password: nicoleL@123
       role: admin
