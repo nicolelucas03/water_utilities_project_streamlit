@@ -10,6 +10,7 @@ import streamlit_authenticator as stauth
 import yaml
 from modules import financial_performance
 from modules import overview
+from modules.login import show_login_page
 from components.container import card_container
 from streamlit_authenticator.utilities import LoginError
 from yaml.loader import SafeLoader
@@ -49,57 +50,19 @@ authenticator = stauth.Authenticate(
 st.session_state["authenticator"] = authenticator
 st.session_state["config"] = config
 if st.session_state.get("authentication_status") is None:
-    tab1, tab2 = st.tabs(["Login", "Register"])
-    
-    with tab1:
-        try: 
-            authenticator.login(max_login_attempts=6) 
-        except Exception as e: 
-            st.error(e)
-    
-    with tab2:
-        try:
-            (email_of_registered_user,
-             username_of_registered_user,
-             name_of_registered_user) = authenticator.register_user(
-             )
-            
-            if email_of_registered_user:
-                st.success('User registered successfully')
-                with open('config.yaml', 'w') as file:
-                    yaml.dump(config, file, default_flow_style=False)
-                st.info('Please switch to the Login tab and sign in')
-        except Exception as e:
-            st.error(e)
-
-elif st.session_state["authentication_status"] is False:
-    tab1, tab2 = st.tabs(["Login", "Register"])
-    
-    with tab1:
-        st.error('Username/password is incorrect')
-        try: 
-            authenticator.login(max_login_attempts=6) 
-        except Exception as e: 
-            st.error(e)
-    
-    with tab2:
-        try:
-            (email_of_registered_user,
-             username_of_registered_user,
-             name_of_registered_user) = authenticator.register_user(
-                 pre_authorization=False
-             )
-            
-            if email_of_registered_user:
-                st.success('User registered successfully')
-                with open('config.yaml', 'w') as file:
-                    yaml.dump(config, file, default_flow_style=False)
-                st.info('Please switch to the Login tab and sign in')
-        except Exception as e:
-            st.error(e)
+    show_login_page(authenticator,config)
             
 elif st.session_state["authentication_status"]:
+    #GETTING USER'S ROLE AND ASSIGNED COUNTRY!- TESTING
+    username = st.session_state["username"]
+    user_data = config['credentials']['usernames'].get(username, {})
+    user_role = user_data.get('role', 'country')  # Default to 'country' if not specified
+    user_country = user_data.get('country', None)
     
+    # Store in session state for easy access
+    st.session_state['user_role'] = user_role
+    st.session_state['user_country'] = user_country
+
     @st.cache_data
     def load_data(): 
         all_fin_service = pd.read_csv('data/all_fin_service.csv')
@@ -145,19 +108,35 @@ elif st.session_state["authentication_status"]:
     with st.sidebar:
         # st.image("assets/wasreb_logo_dashboard.jpg", width=60)
         st.title("Navigation")
-        
 
-        page = st.radio(
-            "Select a Page", 
-            [
+        if user_role == 'country' and user_country:
+            st.caption(f"Country: {user_country}")
+        
+        # st.markdown("---")
+
+        if user_role == 'admin':
+            page_options = [
                 "Executive Overview", 
                 "Financial Performance",
                 "Service Delivery",
                 "Operations & Production",
-                "Access" 
+                "Access",
+                "Admin Panel"  # Only show for admins
             ]
-        )
+        else:
+            page_options = [
+                "Executive Overview", 
+                "Financial Performance",
+                "Service Delivery",
+                "Operations & Production",
+                "Access"
+            ]
 
+        page = st.radio(
+            "Select a Page", 
+            page_options
+        )
+        
         st.markdown("---")
         st.subheader("Global Filters")
 
@@ -166,11 +145,22 @@ elif st.session_state["authentication_status"]:
             if "country" in df.columns: 
                 all_countries.update(df["country"].unique())
 
-        selected_countries = st.multiselect( 
-            "Select Countries", 
-            options=sorted(all_countries),
-            default=None,
-        )
+        if user_role == 'admin':
+            selected_countries = st.multiselect( 
+                "Select Countries", 
+                options=sorted(all_countries),
+                default=None,
+                help="As an admin, you can view data from all countries"
+            )
+        elif user_role == 'country':
+            if user_country:
+                st.info(f"Viewing data for: **{user_country}**")
+                selected_countries = [user_country]
+            else:
+                st.warning("No country assigned. Please contact admin.")
+                selected_countries = []
+        else:
+            selected_countries = []
 
         all_years = []
         for df_name, df in data.items(): 
@@ -247,9 +237,14 @@ elif st.session_state["authentication_status"]:
     elif page == "Access":
         st.write("Access data goes here...")
 
+    elif page == "Admin Panel":
+        from modules import admin_panel
+        admin_panel.show(config)
+
     PDF_PATH = "assets/report.pdf"
 
     with st.sidebar:
+        st.markdown("---")
         try:
             if os.path.exists(PDF_PATH):
                 with open(PDF_PATH, "rb") as pdf_file:
@@ -268,7 +263,12 @@ elif st.session_state["authentication_status"]:
     def dummy_function():
         st.write("Testing just for now")
 
-    
+    with st.sidebar:
+        st.button(
+            label="🤖 Chat with an AI Bot",
+            on_click=dummy_function, 
+            type="primary"
+        )
     
     with st.sidebar: 
         st.markdown("---")

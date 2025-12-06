@@ -35,6 +35,7 @@ modules/rag_store.py
 *.egg-info/
 dist/
 build/
+.streamlit/secrets.toml
 
 # IDE
 .vscode/
@@ -44,4 +45,13 @@ build/
 
 config.yaml
 secrets.toml
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.pdf
+
+#API KEYS
+credentials.pysecrets.toml
 chroma_db/
