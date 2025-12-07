@@ -10,6 +10,7 @@ import streamlit_authenticator as stauth
 import yaml
 from modules import financial_performance
 from modules import overview
+from modules import service_delivery
 from modules.login import show_login_page
 from components.container import card_container
 from streamlit_authenticator.utilities import LoginError
@@ -229,7 +230,7 @@ elif st.session_state["authentication_status"]:
         financial_performance.show(selected_countries, year_range)
 
     elif page == "Service Delivery":
-        st.write("Service data goes here...")
+        service_delivery.show(selected_countries, year_range)
 
     elif page == "Operations & Production":
         st.write("Production goes here...")
