@@ -25,7 +25,7 @@ st.set_page_config(
 )
 
 
-api_key = st.secrets["API_KEY_LOGIN"]
+#api_key = st.secrets["API_KEY_LOGIN"] #TEMPORARY COMMENT (avoids issues with streamlit run) 
 st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
 
 def load_css(file_path):
@@ -39,14 +39,33 @@ st.markdown("""
 load_css("styles/dashboard.css")
 
 #USER AUTHENTICATION: HMM, MAYBE CHANGE UI? 
-with open("config.yaml") as file:
-     config = yaml.load(file, Loader=SafeLoader)
+# with open("config.yaml") as file:
+#      config = yaml.load(file, Loader=SafeLoader)
+
+# authenticator = stauth.Authenticate(
+#      config["credentials"],
+#      config["cookie"]["name"],
+#      config["cookie"]["key"],
+#      config["cookie"]["expiry_days"],)
+
+with open("config.yaml", "r") as file:
+    config = yaml.safe_load(file)
+
+# Defensive checks so we don't get a weird TypeError
+if not isinstance(config, dict):
+    st.error(f"config.yaml did not load as a dictionary. Got: {type(config)} with value: {config}")
+    st.stop()
+
+if "credentials" not in config or "cookie" not in config:
+    st.error(f"config.yaml is missing 'credentials' or 'cookie' keys. Got keys: {list(config.keys())}")
+    st.stop()
 
 authenticator = stauth.Authenticate(
-     config["credentials"],
-     config["cookie"]["name"],
-     config["cookie"]["key"],
-     config["cookie"]["expiry_days"],)
+    config["credentials"],
+    config["cookie"]["name"],
+    config["cookie"]["key"],
+    config["cookie"]["expiry_days"],
+)
 
 st.session_state["authenticator"] = authenticator
 st.session_state["config"] = config
@@ -558,10 +577,11 @@ if st.session_state.show_index_search:
         service_delivery.show(selected_countries, year_range)
 
     elif page == "Operations & Production":
-        st.write("Production goes here...")
+        #st.write("Production goes here...")
+        production_operations_page()
 
     elif page == "Access":
-        st.write("Access data goes here...")
+        access.render_access_page(selected_countries, year_range)
 
     elif page == "Admin Panel":
         from modules import admin_panel
