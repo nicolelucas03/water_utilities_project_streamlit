@@ -9,7 +9,9 @@ import os
 import streamlit_authenticator as stauth
 import yaml
 from modules import financial_performance
-from modules import overview
+from modules.operations_production import production_operations_page
+from modules import access
+from modules import overview #added from modules
 from modules.login import show_login_page
 from components.container import card_container
 from streamlit_authenticator.utilities import LoginError
@@ -24,7 +26,7 @@ st.set_page_config(
 )
 
 
-api_key = st.secrets["API_KEY_LOGIN"]
+#api_key = st.secrets["API_KEY_LOGIN"] #TEMPORARY COMMENT (avoids issues with streamlit run) 
 st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
 
 def load_css(file_path):
@@ -251,10 +253,11 @@ elif st.session_state["authentication_status"]:
         st.write("Service data goes here...")
 
     elif page == "Operations & Production":
-        st.write("Production goes here...")
+        #st.write("Production goes here...")
+        production_operations_page()
 
     elif page == "Access":
-        st.write("Access data goes here...")
+        access.render_access_page(selected_countries, year_range)
 
     elif page == "Admin Panel":
         from modules import admin_panel
@@ -292,5 +295,6 @@ elif st.session_state["authentication_status"]:
     with st.sidebar: 
         st.markdown("---")
         if st.session_state.get('authentication_status'):  
+            authenticator.logout("Logout", "sidebar")
             authenticator.logout("Logout", "sidebar")
  

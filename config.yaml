@@ -24,6 +24,13 @@ credentials:
       password_hint: name and numbers
       role: country
       roles: null
+    adrianac:
+      email: adriana@gmail.com
+      first_name: adriana
+      last_name: chavez
+      logged_in: false
+      password: $2b$12$NgWOid.9Sg2XeLAhjEzjbe7jvjjv2cnjCbgE3Q3epDFvrcfz9o7Nq
+      roles: null
     nicole:
       email: nicole@gmail.com
       failed_login_attempts: 0
