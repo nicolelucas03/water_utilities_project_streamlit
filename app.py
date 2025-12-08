@@ -15,14 +15,14 @@ import streamlit_authenticator as stauth
 import yaml
 
 from modules import financial_performance
-from modules from modules.operations_production import production_operations_page
+from modules.operations_production import production_operations_page
 from modules import access
-import overview
+from modules import overview #added from modules
 from components.container import card_container
 from streamlit_authenticator.utilities import LoginError
 from yaml.loader import SafeLoader
 
-api_key = st.secrets["API_KEY_LOGIN"]
+#api_key = st.secrets["API_KEY_LOGIN"] #TEMPORARY COMMENT (avoids issues with streamlit run) 
 st.logo("assets/wasreb_logo_dashboard.jpg", size="large", link= "https://wasreb.go.ke/", icon_image="assets/wasreb_logo_dashboard.jpg")
 
 def load_css(file_path):
@@ -198,13 +198,13 @@ elif st.session_state["authentication_status"]:
     elif page == "Service Delivery":
         st.write("Service data goes here...")
 
-elif page == "Operations & Production":
-    #st.write("Production goes here...")
-    production_operations_page()
+    elif page == "Operations & Production":
+        #st.write("Production goes here...")
+        production_operations_page()
 
-elif page == "Access":
-    #st.write("Access data goes here...")
-    access.render_access_page(selected_countries, year_range)
+    elif page == "Access":
+        #st.write("Access data goes here...")
+        access.render_access_page(selected_countries, year_range)
 
     PDF_PATH = "assets/report.pdf"
 
