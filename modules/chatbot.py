@@ -5,12 +5,31 @@ import json
 import toml
 import pandas as pd
 from typing import Dict, Any, List
+import streamlit as st
 
 from groq import Groq
 from .semantic_index import SemanticIndex
 
-CONFIG = toml.load("secrets.toml")
-GROQ_API_KEY = CONFIG["GROQ_API_KEY"]
+# CONFIG = toml.load("secrets.toml")
+# GROQ_API_KEY = CONFIG["GROQ_API_KEY"]
+# client = Groq(api_key=GROQ_API_KEY)
+
+def get_groq_api_key():
+    # 1) Streamlit Cloud / secrets in UI
+    if "GROQ_API_KEY" in st.secrets:
+        return st.secrets["GROQ_API_KEY"]
+
+    # 2) Local development with secrets.toml
+    if os.path.exists("secrets.toml"):
+        config = toml.load("secrets.toml")
+        return config["GROQ_API_KEY"]
+
+    # 3) If nothing is found, fail with a clear error
+    raise RuntimeError(
+        "No GROQ_API_KEY found. Set it in Streamlit secrets or in a local secrets.toml."
+    )
+
+GROQ_API_KEY = get_groq_api_key()
 client = Groq(api_key=GROQ_API_KEY)
 
 DATASETS: Dict[str, Dict[str, Any]] = {
