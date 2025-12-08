@@ -1,18 +1,40 @@
+# OS / editor files
+.DS_Store
+Thumbs.db
+
 # Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
+*.pyc
+*.pyo
+*.pyd
+*.ipynb_checkpoints/
+
+# Environments
+.env
+.venv/
 venv/
 ENV/
-*.egg-info/
-dist/
-build/
+
+# Secrets
+secrets.toml
+*.key
+*.env
+credentials.py
+
+# Project specific
+*.pdf
 
 # Streamlit
 .streamlit/
+
+# ChromaDB vector index (RAG store)
+chroma_db/
+modules/rag_store.py
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
 .streamlit/secrets.toml
 
 # IDE
@@ -21,6 +43,8 @@ build/
 *.swp
 *.swo
 
+config.yaml
+secrets.toml
 # OS
 .DS_Store
 Thumbs.db
@@ -29,4 +53,5 @@ Thumbs.db
 *.pdf
 
 #API KEYS
-credentials.py
+credentials.pysecrets.toml
+chroma_db/

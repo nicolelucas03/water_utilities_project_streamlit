@@ -53,14 +53,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 18px !important;
 }
 
-/* Commented out - uncomment if needed */
-/*
-[data-testid="stWidgetLabel"] {
-    visibility: hidden !important;
-    height: 0 !important;
-    overflow: hidden !important;
-}
-*/
 
 [data-testid="stPlotlyChart"] * {
     color: #f8f8f2 !important;

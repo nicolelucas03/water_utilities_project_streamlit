@@ -10,7 +10,6 @@ def show():
         st.title("Executive Overview")
     with col2:
         st.markdown(f"<div style='text-align: right; padding-top: 20px;'>Welcome, <strong>{st.session_state['name']}</strong></div>", unsafe_allow_html=True)
-    
     # KPIs Display
     col1, col2, col3 = st.columns(3)
     
@@ -37,7 +36,7 @@ def show():
         st.error("Authentication system not found. Please log in again.")
         return
 
-    tab1, tab2, tab3 = st.tabs(["Profile", "Security", "Username"])
+    tab1, tab2, tab3 = st.tabs(["Profile", "Reset Password", "Update Profile"])
     
     with tab1:
         st.markdown("#### **Your Profile Information**")
@@ -48,15 +47,15 @@ def show():
                 st.markdown("**Username**")
                 st.markdown("**Full Name**")
                 st.markdown("**Email**")
+                st.markdown("**Role**")
             with col2:
                 st.markdown(f"{st.session_state.get('username', 'N/A')}")
                 st.markdown(f"{st.session_state.get('name', 'N/A')}")
                 st.markdown(
                     f"{config['credentials']['usernames'].get(st.session_state['username'], {}).get('email', 'N/A')}")
-        
+                st.markdown(f"{st.session_state.get('user_role', 'N/A').title()}")
+                ##st.caption(f"Role: {user_role.title()}")
     with tab2:
-        st.markdown("For security, enter your current password before setting a new one")
-        st.markdown("")
         
         try:
             if authenticator.reset_password(st.session_state["username"], location='main'):
@@ -68,8 +67,6 @@ def show():
             st.error(f"❌ {e}")
     
     with tab3:
-        st.markdown("Choose a new username for your account")
-        st.markdown("") 
         
         try:
             if authenticator.update_user_details(st.session_state["username"], location='main'):
