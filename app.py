@@ -38,14 +38,33 @@ st.markdown("""
 load_css("styles/dashboard.css")
 
 #USER AUTHENTICATION: HMM, MAYBE CHANGE UI? 
-with open("config.yaml") as file:
-     config = yaml.load(file, Loader=SafeLoader)
+# with open("config.yaml") as file:
+#      config = yaml.load(file, Loader=SafeLoader)
+
+# authenticator = stauth.Authenticate(
+#      config["credentials"],
+#      config["cookie"]["name"],
+#      config["cookie"]["key"],
+#      config["cookie"]["expiry_days"],)
+
+with open("config.yaml", "r") as file:
+    config = yaml.safe_load(file)
+
+# Defensive checks so we don't get a weird TypeError
+if not isinstance(config, dict):
+    st.error(f"config.yaml did not load as a dictionary. Got: {type(config)} with value: {config}")
+    st.stop()
+
+if "credentials" not in config or "cookie" not in config:
+    st.error(f"config.yaml is missing 'credentials' or 'cookie' keys. Got keys: {list(config.keys())}")
+    st.stop()
 
 authenticator = stauth.Authenticate(
-     config["credentials"],
-     config["cookie"]["name"],
-     config["cookie"]["key"],
-     config["cookie"]["expiry_days"],)
+    config["credentials"],
+    config["cookie"]["name"],
+    config["cookie"]["key"],
+    config["cookie"]["expiry_days"],
+)
 
 st.session_state["authenticator"] = authenticator
 st.session_state["config"] = config
