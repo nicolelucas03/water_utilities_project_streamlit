@@ -1,7 +1,11 @@
+# cookie:
+#   expiry_days: 30
+#   key: auth-app-key
+#   name: auth-app-key
 cookie:
   expiry_days: 30
-  key: auth-app-key
-  name: auth-app-key
+  key: "auth-app-key"
+  name: "auth-app-key"
 credentials:
   usernames:
     asmith:
