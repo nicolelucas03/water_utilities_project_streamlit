@@ -296,5 +296,4 @@ elif st.session_state["authentication_status"]:
         st.markdown("---")
         if st.session_state.get('authentication_status'):  
             authenticator.logout("Logout", "sidebar")
-            authenticator.logout("Logout", "sidebar")
  
