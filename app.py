@@ -292,12 +292,12 @@ elif st.session_state["authentication_status"]:
     def dummy_function():
         st.write("Testing just for now")
 
-    with st.sidebar:
-        st.button(
-            label="🤖 Chat with an AI Bot",
-            on_click=dummy_function, 
-            type="primary"
-        )
+    # with st.sidebar:
+    #     st.button(
+    #         label="🤖 Chat with an AI Bot",
+    #         on_click=dummy_function, 
+    #         type="primary"
+    #     )
     
     with st.sidebar: 
         st.markdown("---")
