@@ -754,8 +754,9 @@ def show(selected_countries, year_range=None):
     with st.expander("Click to view s_service.csv", expanded=False): 
         st.dataframe(filtered_sanitation, use_container_width=True, hide_index=True)
 
+# --- New Standalone Execution Block due to venv incompatability issues between this and the https://utilitiesdashboard.streamlit.app version where the exact same code is running without issue ---
+# This block must start with NO INDENTATION (zero spaces)
 
-# --- Standalone Execution Block ---
 if __name__ == "__main__":
     st.set_page_config(layout="wide", page_title="Service Delivery Dashboard")
     st.sidebar.title("Standalone Filters (Used only when running this file directly)")
@@ -768,8 +769,15 @@ if __name__ == "__main__":
         
         min_year = int(min(df_water['date'].dt.year.min(), df_sanitation['date'].dt.year.min()))
         max_year = int(max(df_water['date'].dt.year.max(), df_sanitation['date'].dt.year.max()))
-        year_range = st.sidebar.slider("Select Year Range", min_year, max_year, (min_year, max_year))
+        
+        year_range = st.sidebar.slider(
+            "Select Year Range", 
+            min_value=min_year,
+            max_value=max_year,
+            value=(min_year, max_year)
+        )
         
         show(selected_countries, year_range)
     else:
-        st.error("Cannot run standalone. Please check data files.")
+        st.error("Data loading failed. Check file paths and data integrity.")
+
