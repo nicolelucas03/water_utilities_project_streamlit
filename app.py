@@ -270,27 +270,27 @@ elif st.session_state["authentication_status"]:
         from modules import admin_panel
         admin_panel.show(config)
 
-    PDF_PATH = "assets/report.pdf"
+    # PDF_PATH = "assets/report.pdf"
 
-    with st.sidebar:
-        st.markdown("---")
-        try:
-            if os.path.exists(PDF_PATH):
-                with open(PDF_PATH, "rb") as pdf_file:
-                    st.download_button(
-                        label="📄 Download Report PDF",
-                        data=pdf_file,
-                        file_name="Water_Utility_Report.pdf",
-                        mime="application/pdf",
-                    )
-            else:
-                st.warning("📄 Report PDF not available")
-        except Exception as e:
-            st.warning("📄 Report PDF not available")
+    # with st.sidebar:
+    #     st.markdown("---")
+    #     try:
+    #         if os.path.exists(PDF_PATH):
+    #             with open(PDF_PATH, "rb") as pdf_file:
+    #                 st.download_button(
+    #                     label="📄 Download Report PDF",
+    #                     data=pdf_file,
+    #                     file_name="Water_Utility_Report.pdf",
+    #                     mime="application/pdf",
+    #                 )
+    #         else:
+    #             st.warning("📄 Report PDF not available")
+    #     except Exception as e:
+    #         st.warning("📄 Report PDF not available")
 
             
-    def dummy_function():
-        st.write("Testing just for now")
+    # def dummy_function():
+    #     st.write("Testing just for now")
 
     # with st.sidebar:
     #     st.button(
