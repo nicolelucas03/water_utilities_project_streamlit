@@ -11,6 +11,7 @@ import yaml
 from modules import financial_performance
 from modules.operations_production import production_operations_page
 from modules import access
+from modules import service_delivery
 from modules import overview #added from modules
 from modules.login import show_login_page
 from components.container import card_container
@@ -250,7 +251,7 @@ elif st.session_state["authentication_status"]:
         financial_performance.show(selected_countries, year_range)
 
     elif page == "Service Delivery":
-        st.write("Service data goes here...")
+        service_delivery.show(selected_countries, year_range)
 
     elif page == "Operations & Production":
         #st.write("Production goes here...")
