@@ -71,8 +71,14 @@ authenticator = stauth.Authenticate(
 
 st.session_state["authenticator"] = authenticator
 st.session_state["config"] = config
-if st.session_state.get("authentication_status") is None:
-    show_login_page(authenticator,config)
+
+if "authentication_status" not in st.session_state:
+    st.session_state["authentication_status"] = None
+    st.session_state["name"] = None
+    st.session_state["username"] = None
+
+if st.session_state["authentication_status"] is None:
+    show_login_page(authenticator, config)
             
 elif st.session_state["authentication_status"]:
     #GETTING USER'S ROLE AND ASSIGNED COUNTRY!- TESTING
