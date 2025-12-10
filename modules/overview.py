@@ -5,9 +5,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from components.container import card_container
 
-
-# ==================== DATA LOADING FUNCTIONS ====================
-
 @st.cache_data
 def load_financial_data():
     """Load financial performance data"""
@@ -99,9 +96,7 @@ def load_access_data():
     except Exception as e:
         st.error(f"Error loading access data: {e}")
         return pd.DataFrame(), pd.DataFrame()
-
-
-# ==================== MAIN SHOW FUNCTION ====================
+        
 
 def show(selected_countries, year_range=None):
     """
@@ -168,9 +163,9 @@ def show(selected_countries, year_range=None):
             water_access = water_access[water_access['country'].isin(selected_countries)]
             san_access = san_access[san_access['country'].isin(selected_countries)]
     
-    # ==================== SECTION 1: FINANCIAL PERFORMANCE ====================
+    #FINANCIAL PERFORMANCE KPIS
     
-    st.markdown("## 💰 Financial Performance")
+    st.markdown("## Financial Performance")
     
     # Calculate Financial KPIs
     total_revenue = df_billing['paid'].sum() if not df_billing.empty else 0
@@ -218,9 +213,9 @@ def show(selected_countries, year_range=None):
     
     st.markdown("---")
     
-    # ==================== SECTION 2: SERVICE DELIVERY ====================
+    #SERVICE DELIVERY
     
-    st.markdown("## 🚰 Service Delivery & Quality")
+    st.markdown("## Service Delivery & Quality")
     
     # Calculate Service Delivery KPIs
     total_supplied = df_water['w_supplied'].sum() if not df_water.empty else 0
@@ -292,11 +287,10 @@ def show(selected_countries, year_range=None):
     
     st.markdown("---")
     
-    # ==================== SECTION 3: ACCESS TO SERVICES ====================
+    #ACCESS
     
-    st.markdown("## 🏘️ Access to Water & Sanitation")
+    st.markdown("## Access")
     
-    # Calculate Access KPIs (population-weighted)
     def pop_weighted_pct(df, pct_col):
         """Population-weighted average of a percentage column"""
         if df.empty or 'popn_total' not in df.columns:
@@ -317,7 +311,6 @@ def show(selected_countries, year_range=None):
     
     open_def_pct = pop_weighted_pct(san_access, 'open_def_pct')
     
-    # Display Access KPIs
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
@@ -360,9 +353,8 @@ def show(selected_countries, year_range=None):
     
     st.markdown("---")
     
-    # ==================== SECTION 4: KEY TRENDS ====================
-    
-    st.markdown("## 📈 Key Trends")
+    #KEY TRENDS
+    st.markdown("## Key Trends")
     
     col1, col2 = st.columns(2)
     
@@ -436,7 +428,7 @@ def show(selected_countries, year_range=None):
     
     st.markdown("---")
     
-    # ==================== SECTION 5: ALERTS & PRIORITY ACTIONS ====================
+    #ALERTS
     
     st.markdown("## ⚠️ Priority Alerts")
     
@@ -530,34 +522,3 @@ def show(selected_countries, year_range=None):
     else:
         st.success("✅ All key performance indicators are within acceptable ranges")
     
-    st.markdown("---")
-    
-    # ==================== FOOTER: QUICK LINKS ====================
-    
-    st.markdown("## 🔗 Quick Links to Detailed Pages")
-    
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        st.markdown("**💰 Financial Performance**")
-        st.markdown("- Revenue & Collections")
-        st.markdown("- Cost Recovery")
-        st.markdown("- Customer Segmentation")
-    
-    with col2:
-        st.markdown("**🚰 Service Delivery**")
-        st.markdown("- Water Quality Testing")
-        st.markdown("- Network Efficiency")
-        st.markdown("- Wastewater Management")
-    
-    with col3:
-        st.markdown("**⚙️ Operations**")
-        st.markdown("- NRW Analysis")
-        st.markdown("- Production Forecasting")
-        st.markdown("- Zone Performance")
-    
-    with col4:
-        st.markdown("**🏘️ Access**")
-        st.markdown("- Service Coverage")
-        st.markdown("- Priority Gaps")
-        st.markdown("- Trend Analysis")
