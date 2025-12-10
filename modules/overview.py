@@ -119,7 +119,31 @@ def show(selected_countries, year_range=None):
     
     st.markdown("---")
     
-    # Load all data
+    #CHECKING COUNTRY SELECTION
+    
+    # If no countries selected, show message and stop
+    if not selected_countries or len(selected_countries) == 0:
+        st.info("👈 Please select one or more countries from the sidebar to view the Executive Overview.")
+        
+        # Show helpful instructions
+        st.markdown("### Getting Started")
+        st.markdown("""
+        **To view the Executive Overview dashboard:**
+        
+        1. Use the **Country Filter** in the sidebar to select countries
+        2. Optionally adjust the **Year Range** to focus on specific time periods
+        3. The dashboard will automatically update with relevant KPIs and insights
+        
+        **This dashboard provides:**
+        - Financial Performance metrics (revenue, collection rates, cost recovery)
+        - Service Delivery & Quality indicators (NRW, water quality, treatment rates)
+        - Access to Water & Sanitation statistics
+        - Priority alerts and recommended actions
+        """)
+        
+        return  # Exit the function early
+    
+    # Load all data only after country selection
     df_billing, df_financial = load_financial_data()
     df_water, df_sanitation = load_service_delivery_data()
     water_access, san_access = load_access_data()
@@ -507,4 +531,3 @@ def show(selected_countries, year_range=None):
             """, unsafe_allow_html=True)
     else:
         st.success("✅ All key performance indicators are within acceptable ranges")
-    
