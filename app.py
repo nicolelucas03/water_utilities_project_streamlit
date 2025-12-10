@@ -13,6 +13,7 @@ from modules.operations_production import production_operations_page
 from modules import access
 from modules import service_delivery
 from modules import overview #added from modules
+from modules import profile
 from modules.login import show_login_page
 from components.container import card_container
 from streamlit_authenticator.utilities import LoginError
@@ -306,6 +307,7 @@ elif st.session_state["authentication_status"]:
                 "Service Delivery",
                 "Operations & Production",
                 "Access",
+                "Profile",
                 "Admin Panel"  # Only show for admins
             ]
         else:
@@ -314,7 +316,8 @@ elif st.session_state["authentication_status"]:
                 "Financial Performance",
                 "Service Delivery",
                 "Operations & Production",
-                "Access"
+                "Access", 
+                "Profile"
             ]
 
         page = st.radio(
@@ -576,6 +579,9 @@ elif st.session_state["authentication_status"]:
         elif page == "Access":
             access.render_access_page(selected_countries, year_range)
 
+        elif page == "Profile": 
+            profile.show()
+            
         elif page == "Admin Panel":
             from modules import admin_panel
             admin_panel.show(config)
