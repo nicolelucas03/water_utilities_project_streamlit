@@ -525,7 +525,7 @@ elif st.session_state["authentication_status"]:
     # 2. STANDARD: Show dashboard page if no search active
     else: 
         if page == "Executive Overview":
-            overview.show()
+            overview.show(selected_countries, year_range)
 
             # 🔽 ADD CHATBOT HERE
             st.markdown("---")
