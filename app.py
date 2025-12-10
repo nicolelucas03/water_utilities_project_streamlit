@@ -335,12 +335,18 @@ elif st.session_state["authentication_status"]:
                 all_countries.update(df["country"].unique())
 
         if user_role == 'admin':
+            if page == "Executive Overview":
+                default_countries = []  # Empty for Executive Overview
+            else:
+                default_countries = None
+                
             selected_countries = st.multiselect( 
                 "Select Countries", 
                 options=sorted(all_countries),
-                default=None,
-                help="As an admin, you can view data from all countries"
+                default=default_countries,
+                help="As an admin, you can view data from all countries"   
             )
+            
         elif user_role == 'country':
             if user_country:
                 st.info(f"Viewing data for: **{user_country}**")
