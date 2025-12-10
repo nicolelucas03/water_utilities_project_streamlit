@@ -227,7 +227,7 @@ def show_data_index_search(data, search_mode, target_dataset, target_column, tar
     if not found_results:
         st.warning(f"No records matched your search criteria.")
 
-    st.markdown("---")
+    # st.markdown("---")
     add_search_examples()
 # --- END SEARCH UTILITY FUNCTIONS ---
 
