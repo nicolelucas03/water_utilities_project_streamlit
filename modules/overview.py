@@ -163,7 +163,7 @@ def show(selected_countries, year_range=None):
             water_access = water_access[water_access['country'].isin(selected_countries)]
             san_access = san_access[san_access['country'].isin(selected_countries)]
     
-    #FINANCIAL PERFORMANCE KPIS
+    #FINANCIAL PERFORMANCE
     
     st.markdown("## Financial Performance")
     
@@ -191,9 +191,7 @@ def show(selected_countries, year_range=None):
             st.metric(
                 "Collection Rate", 
                 f"{collection_rate:.1f}%",
-                delta=f"Target: 85%",
-                delta_color=delta_color,
-                help="Percentage of billed amounts actually paid (Target: 85%)"
+                help="Percentage of billed amounts actually paid"
             )
     
     with col3:
@@ -202,9 +200,7 @@ def show(selected_countries, year_range=None):
             st.metric(
                 "Cost Recovery Rate", 
                 f"{cost_recovery_rate:.1f}%",
-                delta=f"Target: 100%",
-                delta_color=delta_color,
-                help="Sewer revenue vs operating expenses (Target: 100%)"
+                help="Sewer revenue vs operating expenses"
             )
     
     with col4:
@@ -250,8 +246,6 @@ def show(selected_countries, year_range=None):
             st.metric(
                 "Non-Revenue Water", 
                 f"{nrw_percent:.1f}%",
-                delta=f"Target: <25%",
-                delta_color=delta_color,
                 help="Water supplied but not billed (Target: <25%)"
             )
     
@@ -261,9 +255,7 @@ def show(selected_countries, year_range=None):
             st.metric(
                 "Water Quality Pass Rate", 
                 f"{overall_pass_rate:.1f}%",
-                delta=f"Target: 98%+",
-                delta_color=delta_color,
-                help="Average of Chlorine and E.coli tests passed (Target: 98%+)"
+                help="Average of Chlorine and E.coli tests passed"
             )
     
     with col3:
@@ -272,9 +264,7 @@ def show(selected_countries, year_range=None):
             st.metric(
                 "Wastewater Treatment", 
                 f"{ww_treatment_rate:.1f}%",
-                delta=f"Target: >80%",
-                delta_color=delta_color,
-                help="Percentage of collected wastewater that is treated (Target: >80%)"
+                help="Percentage of collected wastewater that is treated"
             )
     
     with col4:
@@ -335,9 +325,7 @@ def show(selected_countries, year_range=None):
             st.metric(
                 "No Basic Water", 
                 f"{no_basic_water_pct:.1f}%",
-                delta=f"Target: <10%",
-                delta_color=delta_color,
-                help="Population without basic water access (Target: <10%)"
+                help="Population without basic water access"
             )
     
     with col4:
@@ -346,9 +334,7 @@ def show(selected_countries, year_range=None):
             st.metric(
                 "Open Defecation", 
                 f"{open_def_pct:.1f}%",
-                delta=f"Target: <5%",
-                delta_color=delta_color,
-                help="Population practicing open defecation (Target: <5%)"
+                help="Population practicing open defecation"
             )
     
     st.markdown("---")
