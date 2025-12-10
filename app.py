@@ -227,7 +227,7 @@ def show_data_index_search(data, search_mode, target_dataset, target_column, tar
     if not found_results:
         st.warning(f"No records matched your search criteria.")
 
-    # st.markdown("---")
+    st.markdown("---")
     add_search_examples()
 # --- END SEARCH UTILITY FUNCTIONS ---
 
@@ -506,7 +506,7 @@ elif st.session_state["authentication_status"]:
         elif st.session_state.search_mode == 'Targeted Filter (One Dataset)' and (not st.session_state.selected_dataset or not st.session_state.selected_column or not st.session_state.comparison_value):
             st.session_state.show_index_search = False
 
-        st.markdown("---")
+        # st.markdown("---")
         # ---------------------------------------------
 
     # --- MAIN PAGE EXECUTION LOGIC ---
