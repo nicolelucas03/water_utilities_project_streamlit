@@ -16,7 +16,7 @@ The Water Utilities Dashboard is a comprehensive business intelligence tool desi
 ## Demo
 Live Dashboard: [Streamlit Cloud Link](https://water-utilities-dashboard.streamlit.app/)
 
-Presentation: [Slides](https://docs.google.com/presentation/d/13Ho1lONHJ-fr3gq-YaH5l4_sOXTjUlzPGEKfaxWPnMA/edit?usp=sharing)
+Presentation: [Slides](https://docs.google.com/presentation/d/1V2RuURgjlSG58p9_cHMWjKkIGlj-em2sb43z-WkMHz8/edit?usp=sharing)
 
 ## Tech Stack
 #### Core Technologies
