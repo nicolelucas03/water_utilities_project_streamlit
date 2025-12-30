@@ -59,6 +59,10 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+## Authentication to test it out 
+- Username: nicole 
+- Password: nicoleL@123
+
 ## Project Team
 - Nicole Lucas
 - Adriana Chavez
