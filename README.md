@@ -10,7 +10,7 @@ The Water Utilities Dashboard is a comprehensive business intelligence tool desi
     - Service Delivery
     - Operations and Production 
     - Access
-- AI Intergration for Downloading Reports and AI Bot
+- AI Integration for Downloading Reports and AI Bot
 - User Authentication 
 
 ## Demo
