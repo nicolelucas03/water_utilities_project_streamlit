@@ -76,29 +76,53 @@ def show(selected_countries, year_range=None):
     
     with col1:
         with card_container(key="kpi_metric1"):
-            st.metric("Total Revenue", f"${total_revenue:,.0f}")
+            st.metric(
+                "Total Revenue",
+                f"${total_revenue:,.0f}",
+                help="Total amount of revenue billed to customers over the selected period. Measured in USD."
+            )
     
     with col2:
         with card_container(key="kpi_metric2"):
-            st.metric("Collection Rate", f"{collection_rate:.1f}%")
+            st.metric(
+                "Collection Rate",
+                f"{collection_rate:.1f}%",
+                help="Percentage of billed revenue that has been collected from customers. Calculated as (Total Paid / Total Billed) × 100."
+            )
 
     with col3:
         with card_container(key="kpi_metric3"):
-            st.metric("Cost Recovery Rate", f"{cost_recovery_rate:.1f}%")
+            st.metric(
+                "Cost Recovery Rate",
+                f"{cost_recovery_rate:.1f}%",
+                help="Percentage of operational costs covered by collected revenue. Calculated as (Total Revenue / Total Opex) × 100."
+            )
     
     col1, col2, col3 = st.columns(3)
 
     with col1: 
         with card_container(key="kpi_metric4"): 
-            st.metric("Outstanding", f"${outstanding:,.0f}")
+            st.metric(
+                "Outstanding",
+                f"${outstanding:,.0f}",
+                help="Total amount of billed revenue that remains unpaid by customers. Measured in USD."
+            )
 
     with col2: 
         with card_container(key="kpi_metric5"): 
-            st.metric("Active Customers", f"{total_customers:,}")
+            st.metric(
+                "Active Customers",
+                f"{total_customers:,}",
+                help="Number of customers with active accounts during the selected period."
+            )
 
     with col3: 
         with card_container(key="kpi_metric6"): 
-            st.metric("Avg Revenue/Customer", f"${avg_revenue_per_customer:,.0f}")
+            st.metric(
+                "Avg Revenue/Customer",
+                f"${avg_revenue_per_customer:,.0f}",
+                help="Average revenue billed per active customer. Calculated as (Total Revenue / Number of Active Customers). Measured in USD."
+            )
 
 
     # SECTION 1: Revenue Breakdown & Trends
@@ -339,13 +363,21 @@ def show(selected_countries, year_range=None):
             avg_collection = monthly_billing['collection_rate'].mean()
             
             with card_container(key="insight1"):
-                st.metric("Latest Collection Rate", f"{recent_collection:.1f}%")
+                st.metric(
+                    "Latest Collection Rate",
+                    f"{recent_collection:.1f}%",
+                    help="Most recent monthly collection rate. Percentage of billed revenue collected in the latest month."
+                )
             
         with col2:
             total_outstanding = monthly_billing.tail(1)['outstanding'].iloc[0] if len(monthly_billing) > 0 else 0
             
             with card_container(key="insight2"):
-                st.metric("Current Outstanding", f"${total_outstanding:,.0f}")
+                st.metric(
+                    "Current Outstanding",
+                    f"${total_outstanding:,.0f}",
+                    help="Outstanding billed revenue as of the latest month. Measured in USD."
+                )
 
     with tab2:
         # Collection rate by country
@@ -876,17 +908,29 @@ def show(selected_countries, year_range=None):
                 with col1:
                     with card_container(key="unit_cost1"):
                         avg_opex_customer = unit_costs['opex_per_customer'].mean()
-                        st.metric("Avg Opex/Customer", f"${avg_opex_customer:,.0f}")
+                        st.metric(
+                            "Avg Opex/Customer",
+                            f"${avg_opex_customer:,.0f}",
+                            help="Average operational expenditure per customer. Calculated as (Total Opex / Number of Customers). Measured in USD."
+                        )
                 
                 with col2:
                     with card_container(key="unit_cost2"):
                         avg_opex_km = unit_costs['opex_per_km'].mean()
-                        st.metric("Avg Opex/km", f"${avg_opex_km:,.0f}")
+                        st.metric(
+                            "Avg Opex/km",
+                            f"${avg_opex_km:,.0f}",
+                            help="Average operational expenditure per kilometer of network. Calculated as (Total Opex / Network Length in km). Measured in USD/km."
+                        )
                 
                 with col3:
                     with card_container(key="unit_cost3"):
                         avg_revenue_staff = unit_costs['revenue_per_staff'].mean()
-                        st.metric("Avg Revenue/Staff", f"${avg_revenue_staff:,.0f}")
+                        st.metric(
+                            "Avg Revenue/Staff",
+                            f"${avg_revenue_staff:,.0f}",
+                            help="Average revenue generated per staff member. Calculated as (Total Revenue / Number of Staff). Measured in USD."
+                        )
             else:
                 st.info("Detailed cost breakdown not available")
     else:
